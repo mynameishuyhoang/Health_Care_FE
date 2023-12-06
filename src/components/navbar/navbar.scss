@@ -1,0 +1,69 @@
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 104px;
+
+    .logoContainer {
+        .imgLogo {
+            width: 100px;
+            border-radius: 50%;
+            margin: 2px;
+        }
+    }
+
+    .CartAndLogin {
+        display: flex;
+
+        .imgCart {
+            width: 50px;
+            margin: 27px 0px;
+        }
+
+        .label-cart {
+            text-decoration: none;
+            margin: 40px 20px 40px 0px;
+        }
+
+        .imgLogin {
+            width: 50px;
+            margin: 27px 0px 27px 20px;
+        }
+
+        .label-auth {
+            text-decoration: none;
+            margin: 40px 0px;
+        }
+
+        hr {
+            margin: 27px 0px;
+        }
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    background-color: gray;
+    height: 60px;
+
+    hr {
+        margin: 0px;
+    }
+
+    .link {
+        text-decoration: none;
+        width: 200px;
+        height: 60px;
+
+        p {
+            text-align: center;
+            color: white;
+        }
+    }
+
+    .link:hover {
+        background-color: rgb(40, 150, 58);
+
+    }
+}

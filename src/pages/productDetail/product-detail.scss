@@ -1,0 +1,205 @@
+.pdContainer {
+    margin: 0 10%;
+
+    .name-a-price {
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+
+        .name {
+            color: violet;
+            margin: 8px 0;
+        }
+
+        .price {
+            color: red;
+            margin: 8px 0;
+
+        }
+    }
+
+    .navContainer {
+        .product-detail {
+            display: flex;
+            justify-content: space-around;
+
+            .imgProduct {
+                width: 500px;
+                height: 500px;
+                outline: none;
+                border: 1px solid gray;
+                border-radius: 4px;
+                margin-right: 20px;
+            }
+
+            .sub-product-detail {
+                .promotion {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .transport {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .sub-transport {
+                        margin-left: 200px;
+
+                        .order-process {
+                            display: flex;
+
+                            .order-process-icon {
+                                width: 25px;
+                                height: 25px;
+                                margin: auto;
+                                margin-right: 5px;
+                            }
+                        }
+
+                        .shipp {
+                            display: flex;
+
+                            .shipp-icon {
+                                width: 25px;
+                                height: 25px;
+                                margin: 13px 5px 13px 0;
+                            }
+                        }
+                    }
+                }
+
+                .amount {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .sub-amount {
+                        display: flex;
+
+                        .decrease {
+                            outline: none;
+                            border: 1px solid gray;
+                            border-radius: 2px;
+                            margin: auto;
+                            padding: 8px;
+                            cursor: pointer
+                        }
+
+                        .input-amount {
+                            width: 70px;
+                            margin: 7px 0px;
+                            outline: none;
+                            border: 1px solid gray;
+                        }
+
+                        .increase {
+                            outline: none;
+                            border: 1px solid gray;
+                            border-radius: 2px;
+                            margin: auto;
+                            padding: 8px;
+                            cursor: pointer
+                        }
+                    }
+
+                }
+
+                .buy-a-add {
+                    display: flex;
+                    margin-top: 20px;
+
+                    .btn-buy {
+                        display: flex;
+                        width: 120px;
+                        outline: none;
+                        border: 2px solid gray;
+                        margin: auto;
+                        padding: 4px;
+                        cursor: pointer;
+                        text-align: center;
+                        background-color: rgb(250, 247, 247);
+                        position: relative;
+                        // top: 50%;
+                        // left: 50%;
+                        // transform: translate(-50%, -50%);
+                        box-shadow: 11px 8px 24px 5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+                        border-radius: 15px;
+                        background-color: red;
+                        margin-right: 10px;
+                        color: white;
+
+                        &:hover {
+                            background-color: rgb(223, 3, 3);
+
+                        }
+
+                        .pay-icon {
+                            margin-left: 5px;
+                            width: 40px;
+                        }
+                    }
+
+                    .btn-add-cart {
+                        display: flex;
+                        width: 200px;
+                        outline: none;
+                        border: 2px solid gray;
+                        margin: auto;
+                        padding: 4px;
+                        cursor: pointer;
+                        text-align: center;
+                        background-color: rgb(250, 247, 247);
+                        position: relative;
+                        // top: 50%;
+                        // left: 50%;
+                        // transform: translate(-50%, -50%);
+                        box-shadow: 11px 8px 24px 5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+                        border-radius: 15px;
+                        background-color: rgb(222, 248, 222);
+
+                        &:hover {
+                            background-color: rgb(181, 247, 181);
+
+                        }
+
+                        .add-cart {
+                            margin-left: 5px;
+                            width: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .label-nutrition {
+        font-size: 24px;
+        color: red;
+        text-transform: 600;
+        text-decoration: underline;
+    }
+
+    .table-nutrition {
+        width: 60%;
+        border-collapse: collapse;
+        border: 1px solid;
+        margin-left: 20%;
+        margin-right: 20%;
+
+        tr {
+            border: 1px solid;
+        }
+
+        th {
+            border: 1px solid;
+        }
+
+        .component-item {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .nutrition-item {
+            font-weight: 500;
+        }
+    }
+}

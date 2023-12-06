@@ -1,0 +1,92 @@
+.registerContainer {
+    // width: 100%;
+    // height: 100%;
+    // position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("../../assets/images/bg-register.jpg");
+
+    .imgHome {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navRegister {
+        background-color: rgb(250, 247, 247);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 11px 8px 24px 5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        width: 700px;
+
+        .labelRegister {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: brown;
+        }
+
+        .itemRegister {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+
+            .labelItem {
+                width: 150px;
+                margin: 5px 20px;
+            }
+
+            .inputRegister {
+                min-width: 300px;
+                max-width: 300px;
+                outline: none;
+                border: 1px solid gray;
+                border-radius: 4px;
+                padding: 8px;
+            }
+        }
+
+        .buttonRegister {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+
+            Button {
+                outline: none;
+                border: 1px solid gray;
+                border-radius: 4px;
+                background-color: rgb(224, 218, 218);
+            }
+
+            &:hover {
+                color: rgb(65, 102, 9);
+            }
+        }
+
+        .goLogin {
+            width: 100%;
+            margin: auto;
+            padding: 10px 0;
+            background-color: rgb(224, 218, 218);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+
+            p {
+                width: 700px;
+                margin: 0 30%;
+            }
+
+            a {
+                text-decoration: none;
+
+                &:hover {
+                    color: rgb(65, 102, 9);
+                }
+            }
+        }
+    }
+}

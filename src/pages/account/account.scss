@@ -1,0 +1,38 @@
+.profile-container {
+    display: flex;
+    margin: 10px 30%;
+
+    .main-profile {
+        .header-main {
+            display: flex;
+            margin: 12.5px 20px;
+
+            .auth-icon {
+                width: 50px;
+                border: 1px solid gray;
+                border-radius: 50%;
+            }
+
+            .label-header {
+                .item-header {
+                    margin: 5px;
+                }
+            }
+        }
+
+        hr {
+            margin: 0 20px;
+        }
+
+        .change-profile {
+            display: grid;
+
+            .link-to-page {
+                list-style-type: none;
+                text-decoration: none;
+                margin: 10px 20px;
+                color: black;
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+.footer-container {
+    display: flex;
+    border-top: 2px solid red;
+    margin-top: 20px;
+    justify-content: space-around;
+    background-color: rgb(250, 247, 247);
+    box-shadow: 0px 10px 8px -3px rgba(0, 0, 0, 0.1);
+
+    .label-footer {
+        cursor: pointer;
+
+        &:hover {
+            color: red;
+        }
+    }
+
+}
+
+.social-container {
+    display: flex;
+    margin: 5px;
+
+    .fb-icon {
+        width: 50px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .instagram-icon {
+        width: 50px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .ytb-icon {
+        width: 50px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+}
+
+.cre-icon {
+    width: 50px;
+}
+
+.money-icon {
+    width: 50px;
+}

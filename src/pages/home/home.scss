@@ -1,0 +1,75 @@
+.home {
+
+    .productMenu {
+        display: flex;
+        justify-content: space-around;
+        // background-color: green;
+        width: 80%;
+        // margin: 0% 15%;
+        height: 60px;
+        margin: auto;
+
+        hr {
+            height: 58px;
+            margin: 0px;
+        }
+
+        .productCategory {
+            // width: 20%;
+            min-width: 200px;
+            max-width: 200px;
+            height: 60px;
+            color: black;
+            font-weight: 600;
+            // text-align: center;
+            display: flex;
+            justify-content: center;
+            outline: 1px solid rgb(5, 156, 118);
+            border-radius: 5px;
+            background-color: rgb(222, 248, 222);
+            position: relative;
+            overflow: hidden;
+
+
+
+            p {
+                margin: 20px 0px;
+                position: relative;
+                font-size: 16px;
+            }
+
+            .menu-icon {
+                width: 35px;
+                height: 35px;
+                margin-top: 12px;
+                margin-right: 8px;
+                position: relative;
+            }
+
+
+        }
+
+        .productCategory::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(181, 247, 181);
+            /* Change this to your desired background color */
+            transition: left 0.5s ease;
+            /* Change the animation duration as needed */
+        }
+
+        .productCategory:hover::before {
+            left: 0;
+        }
+    }
+
+    .pagination-container {
+        margin: auto;
+        justify-content: center;
+        margin-top: 20px;
+    }
+}

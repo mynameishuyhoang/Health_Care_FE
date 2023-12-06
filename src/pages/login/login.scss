@@ -1,0 +1,120 @@
+.loginContainer {
+    width: 100%;
+    height: 100%;
+    // background: aqua;
+    position: absolute;
+
+    .navLogin {
+        background-color: rgb(250, 247, 247);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 11px 8px 24px 5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+
+        .times {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: rgb(221, 221, 221);
+            border-radius: 50%;
+
+            &:hover {
+                background-color: rgb(201, 201, 201);
+            }
+
+            .imgCancel {
+                width: 15px;
+                height: 15px;
+                margin-left: 7.5px;
+                margin-top: 7.5px;
+            }
+        }
+
+
+        .labelLogin {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: brown;
+        }
+
+        .loginItem {
+            display: flex;
+            // margin: 20px 150px;
+            justify-content: center;
+            margin: 20px 0;
+
+            .label {
+                margin: 5px 20px;
+                min-width: 80px;
+            }
+
+            .inputLogin {
+                min-width: 300px;
+                max-width: 300px;
+                outline: none;
+                border: 1px solid gray;
+                border-radius: 4px;
+                padding: 8px;
+            }
+        }
+
+        .btnLogin {
+            background: blue;
+            color: white;
+            width: 100px;
+            height: 50px;
+            margin: auto;
+            text-align: center;
+            padding-top: 1px;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .textForgotPw {
+            text-align: end;
+            margin-right: 165px;
+            margin-top: 7px;
+
+            .goForgotPassword {
+                text-decoration: none;
+
+                &:hover {
+                    color: red;
+                }
+            }
+        }
+
+
+
+
+        .goRegister {
+            width: 100%;
+            margin: auto;
+            padding: 10px 0;
+            background-color: rgb(224, 218, 218);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+
+            p {
+                margin: 10px 244px;
+                width: 275px;
+            }
+
+            a {
+                text-decoration: none;
+
+                &:hover {
+                    color: rgb(65, 102, 9);
+                }
+            }
+        }
+    }
+}
