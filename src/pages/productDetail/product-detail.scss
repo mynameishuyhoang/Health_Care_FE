@@ -11,6 +11,11 @@
             margin: 8px 0;
         }
 
+        .unit {
+            color: rgb(1, 168, 1);
+            margin: 8px 0;
+        }
+
         .price {
             color: red;
             margin: 8px 0;
@@ -174,7 +179,7 @@
     .label-nutrition {
         font-size: 24px;
         color: red;
-        text-transform: 600;
+        font-weight: 600;
         text-decoration: underline;
     }
 
@@ -201,5 +206,12 @@
         .nutrition-item {
             font-weight: 500;
         }
+    }
+
+    .label-product-detail {
+        font-size: 24px;
+        color: red;
+        font-weight: 600;
+        text-decoration: underline;
     }
 }

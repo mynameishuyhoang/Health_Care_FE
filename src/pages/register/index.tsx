@@ -1,132 +1,112 @@
 import React, { useState } from "react";
-import Button from '@mui/material/Button';
 import './register.scss'
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import Footer from "../../components/footer";
+import LogoIcon from '../../assets/images/logo.jpg'
 
 
 const Register = () => {
 
     const navigate = useNavigate()
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
-    const [adult, setAdult] = useState('')
-    const [child, setChild] = useState('')
-    const [phone, setPhone] = useState('')
-    const [email, setEmail] = useState('')
 
+    const {
+        register,
+        handleSubmit,
+        // watch,
+        formState: { errors }
+    } = useForm({
+        defaultValues: {
+            username: "",
+            password: "",
+            name: "",
+            adult: "",
+            child: "",
+            phone: "",
+            email: "",
+            address: ""
 
-    const handleChange = (val: string, field: string) => {
-        console.log('val: ', val, field);
-        switch (field) {
-            case 'username':
-                setUsername(val)
-                break;
-            case 'password':
-                setPassword(val)
-                break;
-            case 'name':
-                setName(val)
-                break;
-            case 'adult':
-                setAdult(val)
-                break;
-            case 'child':
-                setChild(val)
-                break;
-            case 'phone':
-                setPhone(val)
-                break;
-            case 'email':
-                setEmail(val)
-                break;
-            default:
-                break;
         }
-    }
+    });
 
-    const handleSubmitRegister = () => {
-        axios.post('https://e9b0-2402-800-6205-5b70-3d24-3253-d0f7-d1f1.ngrok-free.app/api/register', {
-            username: username,
-            password: password,
-            name: name,
-            adult: adult,
-            child: child,
-            phone: phone,
-            email: email,
-        })
-            .then(function (response) {
-                console.log(response);
-                navigate('/')
+    const handleSubmitRegister = async (data?: any) => {
+        try {
+            const res = await axios.post(`https://healthcare-bkmr.onrender.com/api/register`, {
+                ...data
             })
-            .catch(function (error) {
-                console.log(error);
-                alert("Đăng ký tài khoản không thành công. Vui lòng thử lại.")
+            console.log('res: ', res);
+            alert("Đăng ký thành công")
+            navigate('/')
+        }
+        catch (err) {
+            console.log(err);
+        }
 
-            });
     }
 
     return (
-        <div className="registerContainer">
-            <div className="navRegister">
-                <p className="labelRegister">Đăng ký</p>
-                <div className="itemRegister">
-                    <p className="labelItem">Tên đăng nhập</p>
-                    <input className="inputRegister" type="text"
-                        value={username}
-                        onChange={(e) => handleChange(e.target.value, 'username')} />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Mật khẩu</p>
-                    <input className="inputRegister" type="text"
-                        value={password}
-                        onChange={(e) => handleChange(e.target.value, 'password')} />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Nhập lại mật khẩu</p>
-                    <input className="inputRegister" type="text" />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Họ và tên</p>
-                    <input className="inputRegister" type="text"
-                        value={name}
-                        onChange={(e) => handleChange(e.target.value, 'name')} />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Người lớn</p>
-                    <input className="inputRegister" type="text"
-                        value={adult}
-                        onChange={(e) => handleChange(e.target.value, 'adult')} />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Trẻ em</p>
-                    <input className="inputRegister" type="text"
-                        value={child}
-                        onChange={(e) => handleChange(e.target.value, 'child')} />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Số điện thoại</p>
-                    <input className="inputRegister" type="text"
-                        value={phone}
-                        onChange={(e) => handleChange(e.target.value, 'phone')} />
-                </div>
-                <div className="itemRegister">
-                    <p className="labelItem">Email</p>
-                    <input className="inputRegister" type="text"
-                        value={email}
-                        onChange={(e) => handleChange(e.target.value, 'email')} />
-                </div>
-                <div className="buttonRegister"
-                    onClick={handleSubmitRegister}>
-                    <Button>Đăng ký</Button>
-                </div>
-                <div className="goLogin">
-                    <p>Bạn đã có tài khoản?
-                        <NavLink to='/'>Đăng nhập ngay.</NavLink>
-                    </p>
-                </div>
+        <div className="register-container">
+            <div className="header-container">
+                <NavLink to='/'>
+                    <img className="icon-logo" src={LogoIcon} alt="Logo Health Care" />
+                </NavLink>
+                <p className="label-header">Đăng ký</p>
             </div>
+            <div className="data-container">
+                <form className="form-data-register"
+                    onSubmit={handleSubmit((data) => {
+                        handleSubmitRegister(data)
+                    })}
+                >
+                    <p className="label-data">Đăng ký</p>
+                    <label className="label-name-item">Tên đăng nhập<span>*</span></label>
+                    <input className="textfield-data-item"  {...register("username", { required: true, maxLength: 20 })} />
+                    {errors.username && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Mật khẩu</label>
+                    <input className="textfield-data-item"
+                        {...register("password", { required: true, maxLength: 20 })}
+                    />
+                    {errors.password && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Tên người dùng</label>
+                    <input className="textfield-data-item"
+                        {...register("name", { required: true, maxLength: 50 })}
+                    />
+                    {errors.name && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Số lượng người lớn trong gia đình</label>
+                    <input className="textfield-data-item"
+                        {...register("adult", { required: true, maxLength: 2, valueAsNumber: true })}
+                    />
+                    {errors.adult && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Số lượng trẻ em trong gia đình</label>
+                    <input className="textfield-data-item"
+                        {...register("child", { required: true, maxLength: 2, valueAsNumber: true })}
+                    />
+                    {errors.child && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Số điện thoại</label>
+                    <input className="textfield-data-item"
+                        {...register("phone", { required: true })}
+                    />
+                    {errors.phone && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Email</label>
+                    <input className="textfield-data-item"
+                        {...register("email", { required: true })}
+                    />
+                    {errors.email && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <label className="label-name-item">Địa chỉ</label>
+                    <input className="textfield-data-item"
+                        {...register("address", { required: true })}
+                    />
+                    {errors.address && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <input className="save-data" value="Đăng ký" type="submit" />
+                    <div className="go-login">
+                        <p>Bạn đã có tài khoản?
+                            <NavLink to='/'>Đăng nhập ngay.</NavLink>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <Footer />
         </div>
     )
 }

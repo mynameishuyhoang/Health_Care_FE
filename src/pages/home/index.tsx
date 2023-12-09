@@ -16,19 +16,10 @@ import axios from "axios";
 
 const Home = () => {
     const [products, setProducts] = useState()
-    const baseURL = 'https://c1bb-113-176-107-225.ngrok-free.app'; // Replace with your base URL
-
-    const axiosInstance = axios.create({
-        baseURL,
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'https://9797-156-220-22-73.ngrok-free.app',
-        },
-    });
 
     const handleGetProducts = async () => {
         try {
-            const { data } = await axiosInstance.post(`/api/product`)
+            const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/product`)
             console.log('data: ', data);
             setProducts(data?.data)
 
@@ -79,7 +70,7 @@ const Home = () => {
                 </div>
             </div>
             <ProductCard products={products} />
-            <Stack spacing={2}>
+            <Stack spacing={2} style={{ marginBottom: '20px' }}>
                 <Pagination className="pagination-container" count={10} variant="outlined" shape="rounded" />
             </Stack>
             <Footer />

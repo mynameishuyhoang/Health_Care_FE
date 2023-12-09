@@ -7,9 +7,7 @@ import Register from "./pages/register";
 import ProductDetail from "./pages/productDetail";
 import Payment from "./pages/payment";
 import Account from "./pages/account";
-import ChangePassword from "./pages/change-password";
-import AuthData from "./pages/profile-auth-data";
-
+import History from "./pages/history";
 
 function App() {
 
@@ -35,9 +33,13 @@ function App() {
           element: <Payment />
         },
         {
-          path: '/account',
+          path: '/account/:id',
           element: <Account />
-        }
+        },
+        {
+          path: '/history',
+          element: <History />
+        },
       ]
     },
     {
@@ -48,14 +50,7 @@ function App() {
       path: '/register',
       element: <Register />
     },
-    {
-      path: '/auth-data',
-      element: <AuthData />
-    },
-    {
-      path: '/change-password',
-      element: <ChangePassword />
-    },
+
   ]);
 
   return <RouterProvider router={router} />

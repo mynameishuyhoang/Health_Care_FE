@@ -3,7 +3,6 @@ import './login.scss'
 import { NavLink, useNavigate } from "react-router-dom";
 import CancelIcon from '../../assets/icons/cancel.png'
 import axios from "axios";
-import { toastMessage } from "../../components/message";
 
 
 interface Props {
@@ -24,18 +23,17 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
     }
 
     const handleSubmitLogin = () => {
-        axios.post('https://e9b0-2402-800-6205-5b70-3d24-3253-d0f7-d1f1.ngrok-free.app/api/login', {
+        axios.post('https://healthcare-bkmr.onrender.com/api/login', {
             username: username,
             password: password
         })
             .then(function (response) {
                 console.log(response);
                 navigate('/')
-                localStorage.setItem('name', response.data.name)
                 localStorage.setItem('id', response.data._id)
-                console.log('toastMessage: ', toastMessage);
+                localStorage.setItem('name', response.data.name)
+                alert('Đăng nhập thành công')
 
-                toastMessage('success', 'Đăng nhập thành công')
                 handleCloseDlg()
             })
             .catch(function (error) {

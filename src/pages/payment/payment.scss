@@ -22,29 +22,41 @@
             }
         }
 
-        .sub-data-location {
-            margin: 0 auto;
-            padding: 10px;
-            width: 70%;
+        .data-customer-container {
+            display: grid;
+        }
 
-            .btn-save-data {
-                width: 100px;
-                height: 50px;
-                background-color: rgb(1, 173, 1);
-                margin: auto;
-                text-align: center;
-                cursor: pointer;
-                border-radius: 4px;
+        .label-name-item {
+            margin: 10px 20px;
 
-                .label-save {
-                    padding: 16px 0;
-                    color: white;
-                }
-
-                &:hover {
-                    background-color: rgb(114, 228, 114);
-                }
+            span {
+                color: red;
+                font-size: 18px;
             }
+        }
+
+        .textfield-data-item {
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 8px;
+            outline: none;
+            margin: 0 20px;
+        }
+
+        .toast-message {
+            color: red;
+            margin: 0 20px;
+        }
+
+        .save-data {
+            margin: auto;
+            width: 100px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid gray;
+            border-radius: 8px;
+            cursor: pointer;
+
         }
     }
 
@@ -117,12 +129,17 @@
 
         .order {
             border: 1px solid gray;
-            background-color: red;
+            background-color: rgb(1, 167, 1);
             width: 150px;
             color: white;
             border-radius: 8px;
             margin: auto;
             text-align: center;
+            cursor: pointer;
+
+            &:hover {
+                background: green;
+            }
         }
     }
 

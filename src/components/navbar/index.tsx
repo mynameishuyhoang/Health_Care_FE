@@ -35,7 +35,7 @@ const Navbar = () => {
             <div className="navbar">
                 <div className="logoContainer">
                     <NavLink to='/'>
-                        <img className="imgLogo" src={logo} alt="Logo Healthy Care" />
+                        <img className="imgLogo" src={logo} alt="Logo Health Care" />
                     </NavLink>
                 </div>
                 <div>
@@ -77,9 +77,12 @@ const Navbar = () => {
                                 >
                                     <MenuItem onClick={(e) => {
                                         handleClose()
-                                        navigate('/account')
+                                        navigate(`/account/${localStorage.getItem('id')}`)
                                     }}>Tài khoản</MenuItem>
-                                    <MenuItem onClick={handleClose}>Lịch sử mua hàng</MenuItem>
+                                    <MenuItem onClick={(e) => {
+                                        handleClose()
+                                        navigate('/history')
+                                    }}>Lịch sử mua hàng</MenuItem>
                                     <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                                 </Menu>
                             </>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import './cart.scss'
 import TrashIcon from '../../assets/icons/trash.png'
-import Logo from '../../assets/images/logo.jpg'
 import FreeShippIcon from '../../assets/icons/shipp.png'
 import MeatIcon from '../../assets/icons/meat.png'
 import SeaFoodIcon from '../../assets/icons/seafood.png'
@@ -16,19 +15,14 @@ import axios from "axios";
 interface Products {
     productId: string,
     productName: string,
-    amount: string,
-    inputPrice: string,
+    quantity: string,
     exportPrice: string
 }
 
 interface Cart {
     products: Products[],
-    status: number,
     customerId: string
 }
-
-
-
 
 
 const Cart = () => {
@@ -36,26 +30,34 @@ const Cart = () => {
     const navigation = useNavigate()
 
     const [cart, setCart] = useState<Cart[]>([])
-    const baseURL = ' https://dd75-171-244-168-210.ngrok-free.app'; // Replace with your base URL
-
-    const axiosInstance = axios.create({
-        baseURL,
-        headers: {
-            'Content-Type': 'application/json',
-            // 'Access-Control-Allow-Origin': 'https://9797-156-220-22-73.ngrok-free.app',
-        },
-    });
 
     const handleGetCart = async () => {
         try {
-            const { data } = await axiosInstance.post(`/api/order/${localStorage.getItem('id')}`)
-            console.log('data: ', data);
-            setCart(data?.data)
+            const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/cart/${localStorage.getItem('id')}`)
+            console.log('data: ', data?.data);
+            setCart(data?.data?.products)
 
         } catch (err) {
             console.log(err)
         }
     }
+
+    const handleDeleteProductInCart = async (data?: any) => {
+        try {
+            const res = await axios.post(`https://healthcare-bkmr.onrender.com/api/cart/delete/${localStorage.getItem('id')}`, {
+                ...data
+            })
+            console.log('res: ', res);
+            alert("xoá sản phẩm ra giỏi hàng thành công")
+            handleGetCart()
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    console.log('cart: ', cart);
+
 
 
 
@@ -69,8 +71,8 @@ const Cart = () => {
         let summary = 0;
 
         cart.forEach((item: any) => {
-            const { amount, exportPrice } = item.products[0];
-            const productSummary = amount * exportPrice;
+            const { quantity, exportPrice } = item;
+            const productSummary = quantity * exportPrice;
             summary += productSummary;
         });
 
@@ -91,25 +93,25 @@ const Cart = () => {
                 <p style={{ width: '10%', textAlign: 'left' }}>Thao tác</p>
             </div>
             <div className="data-product-container">
-                {cart?.map((item: any) => (
-                    item?.products?.map((pro: any, idx: number) => (
-                        <div key={idx} className="data-product">
-                            <div style={{ width: '10%' }}>
-                                <img className="img-product" src={pro?.image} alt="" />
-                            </div>
-                            <p style={{ width: '30%', textAlign: 'left' }}>{pro?.productName}</p>
-                            <p style={{ width: '15%', textAlign: 'left' }}>{pro?.exportPrice}</p>
-                            <div className="amount-container">
-                                <p className="decrease">-</p>
-                                <input className="input-amount" type="number" value={pro?.amount} />
-                                <p className="increase">+</p>
-                            </div>
-                            <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(pro?.amount) * parseInt(pro?.exportPrice)}</p>
-                            <div style={{ width: '10%', margin: 'auto' }}>
-                                <img className="trash-icon" src={TrashIcon} alt="" />
-                            </div>
+                {cart?.map((item: any, idx: number) => (
+                    <div key={idx} className="data-product">
+                        <div style={{ width: '10%' }}>
+                            <img className="img-product" src={item?.image} alt="" />
                         </div>
-                    ))
+                        <p style={{ width: '30%', textAlign: 'left' }}>{item?.productName}</p>
+                        <p style={{ width: '15%', textAlign: 'left' }}>{item?.exportPrice}</p>
+                        <div className="amount-container">
+                            <p className="decrease">-</p>
+                            <input className="input-amount" type="number" value={item?.quantity} />
+                            <p className="increase">+</p>
+                        </div>
+                        <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(item?.quantity) * parseInt(item?.exportPrice)}</p>
+                        <div style={{ width: '10%', margin: 'auto' }}>
+                            <img className="trash-icon" src={TrashIcon} alt="" onClick={() => {
+                                handleDeleteProductInCart(item?.productId);
+                            }} />
+                        </div>
+                    </div>
                 ))}
                 <hr />
                 <div className="shipp">

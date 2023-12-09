@@ -1,14 +1,110 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './payment.scss'
 import LocationIcon from '../../assets/icons/location.png'
-import Logo from '../../assets/images/logo.jpg'
 import VoucherIcon from '../../assets/icons/voucher.png'
 import ShipIcon from '../../assets/icons/go-shipp.png'
 import Footer from "../../components/footer";
-import { red } from "@mui/material/colors";
+import axios from "axios";
+import { useForm } from "react-hook-form";
 
+interface Customer {
+    name: string
+    phone: string
+    email: string
+    address: string
+}
+
+interface Products {
+    productId: string,
+    productName: string,
+    amount: string,
+    inputPrice: string,
+    exportPrice: string
+}
+
+interface Order {
+    products: Products[],
+    status: number,
+    customerId: string
+}
 
 const Payment = () => {
+    const [dataCustomer, setDataCustomer] = useState<Customer>()
+    const [order, setOrder] = useState<Order[]>([])
+
+    const handleGetCustomer = async () => {
+        try {
+            const data = await axios.post(`https://healthcare-bkmr.onrender.com/api/customer/${localStorage.getItem('id')}`)
+            console.log('data: ', data?.data?.data);
+            setDataCustomer(data?.data?.data)
+            reset({
+                name: localStorage.getItem('name'),
+                phone: data?.data?.data?.phone,
+                email: data?.data?.data?.email,
+                address: data?.data?.data?.address
+            })
+
+        } catch (error) {
+            console.log('err: ', error);
+        }
+    }
+
+    const handleGetOrder = async () => {
+        try {
+            const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/cart/${localStorage.getItem('id')}`)
+            console.log('data: ', data);
+            setOrder(data?.data)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        handleGetCustomer()
+        handleGetOrder()
+    }, [])
+
+    const calculateSummary = () => {
+        let summary = 0;
+
+        order.forEach((item: any) => {
+            const { amountPayment, exportPrice } = item.products[0];
+            const productSummary = amountPayment * exportPrice;
+            summary += productSummary;
+        });
+
+        return summary;
+    }
+
+    const {
+        register,
+        handleSubmit,
+        // watch,
+        reset,
+        formState: { errors }
+    } = useForm({
+        defaultValues: {
+            name: localStorage.getItem('name'),
+            phone: dataCustomer?.phone,
+            email: dataCustomer?.email,
+            address: dataCustomer?.address
+        }
+    });
+
+    const handleUpdateDataCustomer = async (data?: any) => {
+        try {
+            const res = await axios.patch(`https://healthcare-bkmr.onrender.com/api/customer/update/${localStorage.getItem('id')}`, {
+                ...data
+            })
+            console.log('res: ', res);
+            alert("Cập nhật thành công")
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <div className="payment-container">
             <p className="label-payment">THANH TOÁN</p>
@@ -19,45 +115,58 @@ const Payment = () => {
                     <p style={{ color: 'red', fontWeight: '600' }}>Xác Nhận Thông Tin Khách Hàng</p>
                 </div>
                 <hr />
-                <div className="sub-data-location">
-                    <p>Họ tên người nhận</p>
-                    <input style={{ width: '100%', padding: '6px' }} type="text" />
-                    <p>Số điện thoại</p>
-                    <input style={{ width: '100%', padding: '6px' }} type="text" />
-                    <p>Địa chỉ nhận hàng</p>
-
-
-                    <textarea style={{ width: '100%', padding: '6px' }} cols={3} rows={5}></textarea>
-
-                    {/* <input style={{ width: '90%', height: '60px' }} type="text" /> */}
-                    <div className="btn-save-data">
-                        <p className="label-save">Xác nhận</p>
-                    </div>
-                </div>
+                <form className="data-customer-container"
+                    onSubmit={handleSubmit((data) => {
+                        handleUpdateDataCustomer(data)
+                    })}
+                >
+                    <label className="label-name-item">Họ tên <span>*</span></label>
+                    <input className="textfield-data-item"  {...register("name", { required: true, maxLength: 50 })} />
+                    {errors.name && <p className="toast-message">This field is required</p>}
+                    <label className="label-name-item">Số điện thoại</label>
+                    <input className="textfield-data-item"
+                        {...register("phone", { required: true, })}
+                    />
+                    {errors.phone && <p className="toast-message">This field is required</p>}
+                    <label className="label-name-item">Email</label>
+                    <input className="textfield-data-item"
+                        {...register("email", { required: true, })}
+                    />
+                    {errors.email && <p className="toast-message">This field is required</p>}
+                    <label className="label-name-item">Address</label>
+                    <input className="textfield-data-item"
+                        {...register("address", { required: true, })}
+                    />
+                    {errors.address && <p className="toast-message">This field is required</p>}
+                    <input className="save-data" value="Lưu" type="submit" />
+                </form>
             </div>
             <hr />
             <div className="data-product-container">
                 <div className="item-label">
-                    <p style={{ width: '10%', }}>Hình ảnh</p>
-                    <p style={{ width: '40%', textAlign: 'left' }}>Tên sản phẩm</p>
-                    <p style={{ width: '15%', textAlign: 'left' }}>Đơn giá</p>
-                    <p style={{ width: '15%', textAlign: 'left' }}>Số lượng</p>
-                    <p style={{ width: '20%', textAlign: 'left' }}>Thành tiền</p>
+                    <p style={{ width: '10%', fontWeight: '600' }}>Hình ảnh</p>
+                    <p style={{ width: '40%', textAlign: 'left', fontWeight: '600' }}>Tên sản phẩm</p>
+                    <p style={{ width: '15%', textAlign: 'left', fontWeight: '600' }}>Đơn giá</p>
+                    <p style={{ width: '15%', textAlign: 'left', fontWeight: '600' }}>Số lượng</p>
+                    <p style={{ width: '20%', textAlign: 'left', fontWeight: '600' }}>Thành tiền</p>
                 </div>
-                <div className="data-product">
-                    <div style={{ width: '10%' }}>
-                        <img className="img-product" src={Logo} alt="" />
-                    </div>
-                    <p style={{ width: '40%', textAlign: 'left' }}>Tên sản phẩm</p>
-                    <p style={{ width: '15%', textAlign: 'left' }}>10000000</p>
-                    <p style={{ width: '15%', textAlign: 'left' }}>1</p>
-                    <p style={{ width: '20%', textAlign: 'left' }}>100000000</p>
-
-                </div>
+                {order?.map((item: any) => (
+                    item?.products?.map((pro: any, idx: number) => (
+                        <div key={idx} className="data-product">
+                            <div style={{ width: '10%' }}>
+                                <img className="img-product" src={pro?.image} alt="" />
+                            </div>
+                            <p style={{ width: '40%', textAlign: 'left' }}>{pro?.productName}</p>
+                            <p style={{ width: '15%', textAlign: 'left' }}>{pro?.exportPrice}</p>
+                            <p style={{ width: '15%', textAlign: 'left' }}>{pro?.amountPayment}</p>
+                            <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(pro?.amountPayment) * parseInt(pro?.exportPrice)}</p>
+                        </div>
+                    ))
+                ))}
                 <hr />
                 <div className="voucher-container">
-                    <img style={{ width: '40px', marginRight: '10px' }} src={VoucherIcon} alt="" />
-                    <p>Health Care Voucher</p>
+                    <img style={{ width: '40px', marginRight: '10px', }} src={VoucherIcon} alt="" />
+                    <p style={{ fontWeight: '600' }}>Health Care Voucher</p>
                     <select style={{ marginLeft: '60px', width: '200px' }} name="" id="">
                         <option value="">Khuyến mãi</option>
                     </select>
@@ -65,7 +174,7 @@ const Payment = () => {
                 <hr />
                 <div className="shipp-container">
                     <img style={{ width: '40px', marginRight: '10px' }} src={ShipIcon} alt="" />
-                    <p style={{ marginRight: '20px' }}>Đơn vị vận chuyển</p>
+                    <p style={{ marginRight: '20px', fontWeight: '600' }}>Đơn vị vận chuyển</p>
                     <select style={{ marginLeft: '60px', width: '200px' }} name="" id="">
                         <option value="">Nhanh</option>
                         <option value="">Tiết kiệm</option>
@@ -73,14 +182,14 @@ const Payment = () => {
                 </div>
                 <hr />
                 <div className="data-total-payment">
-                    <p style={{ fontSize: '24px' }}>Tổng số tiền:</p>
-                    <p className="label-payment">0(đ)</p>
+                    <p style={{ fontSize: '24px', fontWeight: '600' }}>Tổng số tiền:</p>
+                    <p className="label-payment">{calculateSummary()}(đ)</p>
                 </div>
             </div>
             <hr />
             <div className="payment-container">
                 <div className="payment-methods">
-                    <p style={{ marginRight: '20px' }}>Phương thức thanh toán</p>
+                    <p style={{ marginRight: '20px', fontWeight: '600' }}>Phương thức thanh toán</p>
                     <select style={{ marginLeft: '60px', width: '200px' }} name="" id="">
                         <option value="">Thanh toán khi nhận hàng</option>
                         <option value="">Thanh toán qua ngân hàng</option>
@@ -90,34 +199,40 @@ const Payment = () => {
                 <div className="data-payment">
                     <p style={{
                         width: '250px',
-                        margin: '10px 40px 10px 0'
+                        margin: '10px 40px 10px 0',
+                        fontWeight: '600'
                     }}>Tổng tiền hàng</p>
                     <p style={{
                         width: '150px',
-                        margin: '10px 0'
-                    }}>100000đ</p>
+                        margin: '10px 0',
+                        fontWeight: '600'
+                    }}>{calculateSummary()}(đ)</p>
                 </div>
                 <div className="data-payment">
                     <p style={{
                         width: '250px',
-                        margin: '10px 40px 10px 0'
+                        margin: '10px 40px 10px 0',
+                        fontWeight: '600'
                     }}>Phí vận chuyển</p>
                     <p style={{
                         width: '150px',
-                        margin: '10px 0'
-                    }}>35000đ</p>
+                        margin: '10px 0',
+                        fontWeight: '600'
+                    }}>35000 (đ)</p>
                 </div>
                 <div className="data-payment">
                     <p style={{
                         width: '250px',
-                        margin: '10px 40px 10px 0'
+                        margin: '10px 40px 10px 0',
+                        fontWeight: '600'
                     }}>Tổng thanh toán</p>
                     <p style={{
                         width: '150px',
                         margin: '10px 0',
                         color: 'red',
-                        fontSize: '20px'
-                    }}>135000đ</p>
+                        fontSize: '20px',
+                        fontWeight: '600'
+                    }}>{calculateSummary() + 35000} (đ)</p>
                 </div>
                 <hr />
                 <div className="order">

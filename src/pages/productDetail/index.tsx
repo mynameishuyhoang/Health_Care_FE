@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PayIcon from '../../assets/icons/pay.png'
 import AddToCartIcon from '../../assets/icons/add-to-cart.png'
 import OrderProcessingIcon from '../../assets/icons/order-processing.png'
@@ -7,7 +7,6 @@ import './product-detail.scss'
 import Footer from "../../components/footer";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 interface ProductsProps {
     products?: any
@@ -16,58 +15,36 @@ interface ProductsProps {
 const ProductDetail = (props: ProductsProps) => {
     const { state } = useLocation();
     console.log('props-detail: ', state);
-    const baseURL = 'https://e9b0-2402-800-6205-5b70-3d24-3253-d0f7-d1f1.ngrok-free.app'; // Replace with your base URL
 
-    const axiosInstance = axios.create({
-        baseURL,
-        headers: {
-            'Content-Type': 'application/json',
-            // 'Access-Control-Allow-Origin': 'https://9797-156-220-22-73.ngrok-free.app',
-        },
-    });
+    const [amountPayment, setAmountPayment] = useState(1)
 
     const handleAddProductToCart = async () => {
         try {
-            const { data } = await axiosInstance.post(`/api/order/add`, {
+            const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/cart/add`, {
                 customerId: localStorage.getItem('id'),
-                status: 1,
                 products: [
                     {
                         productId: state?.product?._id,
                         image: state?.product?.image,
                         productName: state?.product?.name,
-                        amount: 1,
-                        inputPrice: state?.product?.inputPrice,
+                        quantity: amountPayment,
                         exportPrice: state?.product?.exportPrice,
                     }
                 ]
             })
             console.log('datatoCart: ', data);
-
-            toast.success(`Add ${state?.product.name} to cart successfully!`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            })
         }
         catch (err) {
             console.log(err)
-            toast.error('Wrong. Please try again!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
         }
+    }
+
+    const handleDecreaseAmount = () => {
+        amountPayment === 0 ? setAmountPayment(0) : setAmountPayment(amountPayment - 1)
+    }
+
+    const handleIncreaseAmount = () => {
+        state?.product?.amount === amountPayment ? alert("Số lượng hàng quá giới hạn") : setAmountPayment(amountPayment + 1)
     }
 
     useEffect(() => {
@@ -82,8 +59,12 @@ const ProductDetail = (props: ProductsProps) => {
                     <p className="name">{state.product.name}</p>
                 </div>
                 <div style={{ display: 'flex' }}>
+                    <p style={{ margin: '8px 4px 8px 0' }}>Đơn vị tính:</p>
+                    <p className="unit">100 Gram</p>
+                </div>
+                <div style={{ display: 'flex' }}>
                     <p style={{ margin: '8px 4px 8px 0' }}>Đơn giá:</p>
-                    <p className="price">{state.product.exportPrice}</p>
+                    <p className="price">{state.product.exportPrice} (đ)</p>
                 </div>
             </div>
             <hr />
@@ -92,7 +73,9 @@ const ProductDetail = (props: ProductsProps) => {
                     <img className="imgProduct" src={state.product.image} alt="" />
                     <div className="sub-product-detail">
                         <div className="promotion">
-                            <p>Các khuyến mãi</p>
+                            <p style={{
+                                fontWeight: '600 '
+                            }}>Các khuyến mãi</p>
                             <select style={{
                                 borderRadius: '4px',
                                 width: '150px'
@@ -104,7 +87,9 @@ const ProductDetail = (props: ProductsProps) => {
                             </select>
                         </div>
                         <div className="transport">
-                            <p>Vận chuyển</p>
+                            <p style={{
+                                fontWeight: '600 '
+                            }}>Vận chuyển</p>
                             <div className="sub-transport">
                                 <div className="order-process">
                                     <img className="order-process-icon" src={OrderProcessingIcon} alt="" />
@@ -117,15 +102,17 @@ const ProductDetail = (props: ProductsProps) => {
                             </div>
                         </div>
                         <div className="amount">
-                            <p>Số lượng</p>
+                            <p style={{
+                                fontWeight: '600 '
+                            }}>Số lượng</p>
                             <div className="sub-amount">
-                                <p className="decrease">-</p>
-                                <input className="input-amount" type="number" defaultValue={1} />
-                                <p className="increase">+</p>
+                                <p className="decrease" onClick={handleDecreaseAmount}>-</p>
+                                <input className="input-amount" type="number" value={amountPayment} />
+                                <p className="increase" onClick={handleIncreaseAmount}>+</p>
                             </div>
                         </div>
                         <div className="buy-a-add">
-                            <div className="btn-buy">
+                            <div className="btn-buy" onClick={(e) => handleAddProductToCart()}>
                                 <p>Mua ngay</p>
                                 <img className="pay-icon" src={PayIcon} alt="" />
                             </div>
@@ -138,16 +125,19 @@ const ProductDetail = (props: ProductsProps) => {
                     <div>
                         <p style={{
                             fontSize: '20px',
-                            color: 'red'
+                            color: 'red',
+                            fontWeight: '600'
                         }}>Tư vấn - liên hệ:</p>
                         <ul>
                             <li>Huy Hoàng</li>
                             <li>Đức Minh</li>
                             <li>Thanh Hải</li>
+                            <li>Đặng Hoàng</li>
                         </ul>
                         <p style={{
                             fontSize: '20px',
-                            color: 'red'
+                            color: 'red',
+                            fontWeight: '600'
                         }}>Địa chỉ mua hàng:</p>
                         <ul>
                             <li>Đà Nẵng</li>
@@ -190,7 +180,7 @@ const ProductDetail = (props: ProductsProps) => {
                 </tbody>
             </table>
             <hr />
-            <p className="prop">Giới thiệu sản phẩm</p>
+            <p className="label-product-detail">Giới thiệu sản phẩm</p>
             <p>{state.product.description}</p>
             <Footer />
         </div>

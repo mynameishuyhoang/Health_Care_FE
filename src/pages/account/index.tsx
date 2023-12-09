@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import './account.scss'
 import Footer from "../../components/footer";
 import Author from '../../assets/icons/authorization.png'
 import { NavLink } from "react-router-dom";
-import AuthData from "../profile-auth-data";
+import AuthData from "../profile";
+import ChangePassword from "../change-password";
+
+const menuAccount = [
+    {
+        id: 1,
+        menu: "Hồ sơ",
+        component: <AuthData />
+    },
+    {
+        id: 2,
+        menu: "Đổi mật khẩu",
+        component: <ChangePassword />
+    }
+]
 
 
 const Account = () => {
+    const [tabSelected, setTabSelected] = useState<any>(menuAccount[0])
+
     return (
         <div>
             <div className="profile-container">
@@ -20,13 +36,12 @@ const Account = () => {
                     </div>
                     <hr />
                     <div className="change-profile">
-                        <NavLink className="link-to-page" to='/profile'>Hồ sơ</NavLink>
-                        <NavLink className="link-to-page" to='/add-payment'>Ngân hàng</NavLink>
-                        <NavLink className="link-to-page" to='/add-address'>Địa chỉ</NavLink>
-                        <NavLink className="link-to-page" to='/change-password'>Đổi mật khẩu</NavLink>
+                        <p className={`${tabSelected.id === 1 && 'isActive'} link-to-page`} onClick={() => setTabSelected(menuAccount[0])}>Hồ sơ</p>
+                        <p className={`${tabSelected.id === 2 && 'isActive'} link-to-page`} onClick={() => setTabSelected(menuAccount[1])}>Đổi mật khẩu</p>
                     </div>
                 </div>
-                <AuthData />
+                {tabSelected.component}
+                {/* <AuthData /> */}
             </div>
             <Footer />
         </div>

@@ -12,17 +12,23 @@ const ProductCard = (props: ProductsProps) => {
     const navigation = useNavigate()
 
     return (
-        <div className="productContainer">
+        <div className="product-container">
             {props.products?.map((item: any, idx: number) => (
-                <div key={idx} className="productCard"
+                <div key={idx} className="product-card"
                     onClick={() => navigation(`/product-detail/${item?._id}`, {
                         state: {
                             product: item
                         }
                     })}>
-                    <img className="productImg" src={item.image} alt="" />
+                    <img className="product-img" src={item.image} alt="" />
                     <p>Tên sản phẩm: {item.name}</p>
+                    <p>Đơn vị tính: 100 gram</p>
                     <p>Giá: {item.exportPrice} vnđ</p>
+                    {item.amount !== 0 ?
+                        <p>Số lượng: {item.amount}</p>
+                        :
+                        <p>Hết hàng</p>
+                    }
                 </div>
             ))}
         </div>
