@@ -17,9 +17,9 @@ interface Customer {
 interface Products {
     productId: string,
     productName: string,
-    amount: string,
-    inputPrice: string,
-    exportPrice: string
+    quantity: number,
+    image: string,
+    exportPrice: number
 }
 
 interface Order {
@@ -31,6 +31,7 @@ interface Order {
 const Payment = () => {
     const [dataCustomer, setDataCustomer] = useState<Customer>()
     const [order, setOrder] = useState<Order[]>([])
+    const [orderRes, setOrderRes] = useState<any>()
 
     const handleGetCustomer = async () => {
         try {
@@ -52,11 +53,29 @@ const Payment = () => {
     const handleGetOrder = async () => {
         try {
             const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/cart/${localStorage.getItem('id')}`)
-            console.log('data: ', data);
-            setOrder(data?.data)
+            console.log('data 111111111:  ', data);
+            setOrder(data?.data?.products)
+            setOrderRes(data?.data)
 
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    const handleAddToOrder = async () => {
+        try {
+            const dataPayload = {
+                customerId: orderRes?.customerId,
+                products: orderRes?.products,
+                status: 1,
+            }
+            const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/order/add`, {
+                ...dataPayload
+            })
+            console.log('dataOrder: ', data)
+
+        } catch (error) {
+
         }
     }
 
@@ -69,8 +88,8 @@ const Payment = () => {
         let summary = 0;
 
         order.forEach((item: any) => {
-            const { amountPayment, exportPrice } = item.products[0];
-            const productSummary = amountPayment * exportPrice;
+            const { quantity, exportPrice } = item;
+            const productSummary = quantity * exportPrice;
             summary += productSummary;
         });
 
@@ -150,18 +169,16 @@ const Payment = () => {
                     <p style={{ width: '15%', textAlign: 'left', fontWeight: '600' }}>Số lượng</p>
                     <p style={{ width: '20%', textAlign: 'left', fontWeight: '600' }}>Thành tiền</p>
                 </div>
-                {order?.map((item: any) => (
-                    item?.products?.map((pro: any, idx: number) => (
-                        <div key={idx} className="data-product">
-                            <div style={{ width: '10%' }}>
-                                <img className="img-product" src={pro?.image} alt="" />
-                            </div>
-                            <p style={{ width: '40%', textAlign: 'left' }}>{pro?.productName}</p>
-                            <p style={{ width: '15%', textAlign: 'left' }}>{pro?.exportPrice}</p>
-                            <p style={{ width: '15%', textAlign: 'left' }}>{pro?.amountPayment}</p>
-                            <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(pro?.amountPayment) * parseInt(pro?.exportPrice)}</p>
+                {order?.map((item: any, idx: number) => (
+                    <div key={idx} className="data-product">
+                        <div style={{ width: '10%' }}>
+                            <img className="img-product" src={item?.image} alt="" />
                         </div>
-                    ))
+                        <p style={{ width: '40%', textAlign: 'left' }}>{item?.productName}</p>
+                        <p style={{ width: '15%', textAlign: 'left' }}>{item?.exportPrice}</p>
+                        <p style={{ width: '15%', textAlign: 'left' }}>{item?.quantity}</p>
+                        <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(item?.quantity) * parseInt(item?.exportPrice)}</p>
+                    </div>
                 ))}
                 <hr />
                 <div className="voucher-container">
@@ -235,7 +252,7 @@ const Payment = () => {
                     }}>{calculateSummary() + 35000} (đ)</p>
                 </div>
                 <hr />
-                <div className="order">
+                <div className="order" onClick={handleAddToOrder}>
                     <p>Đặt hàng</p>
                 </div>
             </div>

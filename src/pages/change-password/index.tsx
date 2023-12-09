@@ -37,8 +37,7 @@ const ChangePassword = () => {
                     alert(JSON.stringify(data));
                 })}
             >
-                {errors.oldpassword && <p className="toast-message">This field is required</p>}
-                <label className="label-name-item">Mật khẩu mới</label>
+                <label className="label-name-item">Mật khẩu mới <span>*</span></label>
                 <input className="textfield-data-item" type="password"
                     {...register("newpassword", {
                         required: true, minLength: {
@@ -48,7 +47,7 @@ const ChangePassword = () => {
                     })}
                 />
                 {errors.newpassword && <p className="toast-message">{errors.newpassword.message}</p>}
-                <label className="label-name-item">Nhập lại mật khẩu mới</label>
+                <label className="label-name-item">Nhập lại mật khẩu mới <span>*</span></label>
                 <input className="textfield-data-item" type="password"
                     {...register("renewpassword", { required: true, validate: (val) => val === watch('newpassword') || "Passwords do not match" })}
                 />

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import './login.scss'
 import { NavLink, useNavigate } from "react-router-dom";
 import CancelIcon from '../../assets/icons/cancel.png'
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { toastMessage } from "../../components/message";
 
 
 interface Props {
@@ -12,33 +14,27 @@ interface Props {
 const Login = ({ handleCloseDlg = () => null }: Props) => {
 
     const navigate = useNavigate()
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
 
-    const handleChange = (val: string, field: string) => {
-        switch (field) {
-            case 'username': setUsername(val); break;
-            case 'password': setPassword(val); break;
-        }
-    }
-
-    const handleSubmitLogin = () => {
+    const handleSubmitLogin = (data?: any) => {
         axios.post('https://healthcare-bkmr.onrender.com/api/login', {
-            username: username,
-            password: password
+            username: data?.username,
+            password: data?.password
         })
             .then(function (response) {
                 console.log(response);
                 navigate('/')
                 localStorage.setItem('id', response.data._id)
                 localStorage.setItem('name', response.data.name)
-                alert('Đăng nhập thành công')
+
+                toastMessage('success', 'Đăng nhập thành công')
 
                 handleCloseDlg()
             })
             .catch(function (error) {
                 console.log(error);
-                alert("Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại")
+                console.log();
+                
+                toastMessage('error', 'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại')
             });
     }
 
@@ -49,6 +45,21 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
         }
     }
 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors }
+    } = useForm({
+        defaultValues: {
+            username: "",
+            password: "",
+        }
+    });
+
+    console.log(watch('username'));
+
+
     return (
         <div className="loginContainer">
             <div className="navLogin">
@@ -56,6 +67,26 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
                     <img className="imgCancel" src={CancelIcon} alt="Đóng" onClick={handleCloseDlg} />
                 </div>
                 <div style={{ margin: 'auto' }}>
+                    <p className="labelLogin">Đăng nhập</p>
+                    <form className="form-login"
+                        onSubmit={handleSubmit((data) => {
+                            handleSubmitLogin(data)
+                        })}
+                    >
+                        <label className="label-name-item">Tên đăng nhập <span>*</span></label>
+                        <input className="textfield-data-item"
+                            {...register("username", { required: true })}
+                        />
+                        {errors.username && <p className="toast-message">Tên đăng nhập không được để trống</p>}
+                        <label className="label-name-item">Mật khẩu <span>*</span></label>
+                        <input className="textfield-data-item" type="password"
+                            onKeyDown={_handleKeyDown}
+                            {...register("password", { required: true })}
+                        />
+                        {errors.password && <p className="toast-message">Mật khẩu không được được để trống</p>}
+                        <input className="save-data" value="Đăng nhập" type="submit" />
+                    </form>
+                    {/* <div style={{ margin: 'auto' }}>
                     <p className="labelLogin">Đăng nhập</p>
                     <div className="loginItem">
                         <p className="label">Username </p>
@@ -78,7 +109,7 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
                     <div className="btnLogin"
                         onClick={handleSubmitLogin}>
                         <p>Đăng nhập</p>
-                    </div>
+                    </div> */}
                     <div className="goRegister">
                         <p>Bạn chưa có tài khoản?
                             <NavLink to='/register'>Đăng ký ngay.</NavLink>

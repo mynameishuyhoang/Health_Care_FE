@@ -11,6 +11,7 @@ interface Customer {
     name: string
     phone: string
     email: string
+    address: string
 }
 
 
@@ -29,7 +30,8 @@ const Profile = () => {
                 adult: parseInt(data?.data?.data?.adult),
                 child: parseInt(data?.data?.data?.child),
                 phone: data?.data?.data?.phone,
-                email: data?.data?.data?.email
+                email: data?.data?.data?.email,
+                address: data?.data?.data?.address
             })
 
         } catch (error) {
@@ -53,7 +55,8 @@ const Profile = () => {
             adult: dataCustomer?.adult,
             child: dataCustomer?.child,
             phone: dataCustomer?.phone,
-            email: dataCustomer?.email
+            email: dataCustomer?.email,
+            address: dataCustomer?.address
         }
     });
 
@@ -96,22 +99,27 @@ const Profile = () => {
                 <label className="label-name-item">Họ tên <span>*</span></label>
                 <input className="textfield-data-item"  {...register("name", { required: true, maxLength: 50 })} />
                 {errors.name && <p className="toast-message">This field is required</p>}
-                <label className="label-name-item">Người lớn</label>
+                <label className="label-name-item">Người lớn trong gia đình <span>*</span></label>
                 <input className="textfield-data-item"
                     {...register("adult", { required: true, maxLength: 2, valueAsNumber: true })}
                 />
                 {errors.adult && <p className="toast-message">This field is required</p>}
-                <label className="label-name-item">Trẻ em</label>
+                <label className="label-name-item">Trẻ em trong gia đình <span>*</span></label>
                 <input className="textfield-data-item"
                     {...register("child", { required: true, maxLength: 2, valueAsNumber: true })}
                 />
                 {errors.child && <p className="toast-message">This field is required</p>}
-                <label className="label-name-item">Số điện thoại</label>
+                <label className="label-name-item">Địa chỉ <span>*</span></label>
+                <input className="textfield-data-item"
+                    {...register("address", { required: true, })}
+                />
+                {errors.address && <p className="toast-message">This field is required</p>}
+                <label className="label-name-item">Số điện thoại <span>*</span></label>
                 <input className="textfield-data-item"
                     {...register("phone", { required: true, })}
                 />
                 {errors.phone && <p className="toast-message">This field is required</p>}
-                <label className="label-name-item">Email</label>
+                <label className="label-name-item">Email <span>*</span></label>
                 <input className="textfield-data-item"
                     {...register("email", { required: true, })}
                 />

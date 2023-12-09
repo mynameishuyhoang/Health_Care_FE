@@ -49,6 +49,10 @@
 
         }
 
+        .isActive {
+            background-color: rgb(4, 136, 15);
+        }
+
         .productCategory::before {
             content: "";
             position: absolute;
@@ -64,6 +68,29 @@
 
         .productCategory:hover::before {
             left: 0;
+        }
+    }
+
+    .search-product {
+        display: flex;
+        justify-content: flex-end;
+        margin: 20px 10% 20px 0;
+
+        input {
+            width: 230px;
+            margin-right: 20px;
+            outline: 1px solid gray;
+            border-radius: 4px;
+        }
+
+        Button {
+            background-color: rgb(4, 212, 4);
+            color: white;
+            width: 100px;
+
+            &:hover {
+                background: rgb(1, 160, 1);
+            }
         }
     }
 

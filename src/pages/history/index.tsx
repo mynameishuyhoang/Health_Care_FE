@@ -3,12 +3,9 @@ import './history.scss'
 import Footer from "../../components/footer";
 import axios from "axios";
 import moment from "moment";
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import CustomModal from "../../components/modal";
+import CancelIcon from '../../assets/icons/cancel.png'
+import { Button } from "@mui/material";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -39,7 +36,14 @@ const History = () => {
 
     const [order, setOrder] = useState<Order[]>([])
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const [orderSelected, setOrderSelected] = React.useState<any>();
+    const [status, setStatus] = React.useState<any>();
+    const [id, setId] = React.useState<any>();
+
+    const handleOpen = (listProducts?: any) => {
+        setOrderSelected(listProducts)
+        setOpen(true)
+    };
     const handleClose = () => setOpen(false);
 
     const handleGetOrder = async () => {
@@ -53,9 +57,22 @@ const History = () => {
         }
     }
 
+    const handleUpdateStatusOrder = async (id: string) => {
+        try {
+            const data = await axios.put(`https://healthcare-bkmr.onrender.com/api/order/update/${id}`, {
+                status: 4
+            })
+            console.log('order-data: ', data?.data);
+            setOrder(data?.data?.data)
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
     const handleChangeStatusOrder = (statusValues: number) => {
         switch (statusValues) {
-            case 1: return "Chờ xử lý";
+            case 1: return "Đang xử lý";
             case 2: return "Đang giao hàng";
             case 3: return "Đã giao hàng";
             case 4: return "Đã huỷ";
@@ -69,7 +86,19 @@ const History = () => {
         return timeFormatted;
     }
 
-    console.log('data: ', order);
+    console.log('data order: ', order);
+
+    const handleCalculateTotalPrice = (listProducts?: any) => {
+        let summary = 0;
+
+        listProducts.forEach((item: any) => {
+            const { quantity, exportPrice } = item;
+            const productSummary = quantity * exportPrice;
+            summary += productSummary;
+        });
+
+        return summary;
+    }
 
 
     useEffect(() => {
@@ -79,61 +108,73 @@ const History = () => {
     return (
         <>
             <div className="history-container">
-                <p>Lịch sử mua hàng</p>
+                <p style={{ fontSize: '24px', fontWeight: '600', textAlign: 'center', color: '#5C8374', margin: '0', padding: '10px 0' }}>Lịch sử mua hàng</p>
                 <hr />
                 <div className="order-history">
                     <div className="data-label">
-                        <p style={{ width: '25%' }}>Mã đơn hàng</p>
-                        <p style={{ width: '25%', textAlign: 'left' }}>Ngày mua</p>
-                        <p style={{ width: '25%', textAlign: 'left' }}>Tổng thanh toán</p>
-                        <p style={{ width: '25%', textAlign: 'left' }}>Trạng thái</p>
-
+                        <p style={{ width: '25%', fontWeight: '600', marginLeft: '10px', fontSize: '18px', color: '#FF8F8F' }}>Mã đơn hàng</p>
+                        <p style={{ width: '25%', textAlign: 'left', fontWeight: '600', fontSize: '18px', color: '#FF8F8F' }}>Ngày mua</p>
+                        <p style={{ width: '25%', textAlign: 'left', fontWeight: '600', fontSize: '18px', color: '#FF8F8F' }}>Tổng thanh toán</p>
+                        <p style={{ width: '25%', textAlign: 'left', fontWeight: '600', fontSize: '18px', color: '#FF8F8F' }}>Trạng thái</p>
                     </div>
                     <hr />
-                    {order?.map((item: any) => (
-                        item?.products?.map((pro: any, idx: number) => (
-                            <div key={idx} onClick={handleOpen} className="data-order">
-                                <p style={{ width: '25%', textAlign: 'left' }}>{item?._id.substring(item?._id.length - 8, item?._id.length)}</p>
-                                <p style={{ width: '25%', textAlign: 'left' }}>{handleConvertTimeStamp(item?.updatedAt)}</p>
-                                <p style={{ width: '25%', textAlign: 'left' }}>{parseInt(pro?.amountPayment) * parseInt(pro?.exportPrice)}</p>
-                                <p style={{ width: '25%', textAlign: 'left' }}>{handleChangeStatusOrder(item?.status)}</p>
-                                <Modal
-                                    aria-labelledby="transition-modal-title"
-                                    aria-describedby="transition-modal-description"
-                                    open={open}
-                                    onClose={handleClose}
-                                    closeAfterTransition
-                                    slots={{ backdrop: Backdrop }}
-                                    slotProps={{
-                                        backdrop: {
-                                            timeout: 500,
-                                        },
-                                    }}
-                                >
-                                    <Fade in={open}>
-                                        <Box sx={style}>
-                                            <Typography id="transition-modal-title" variant="h6" component="h2">
-                                                Danh sách các sản phẩm có trong hoá đơn
-                                            </Typography>
-                                            <hr />
-                                            <div style={{
-                                                display: "flex"
-                                            }}>
-                                                <img style={{
-                                                    width: '60px'
-                                                }} src={pro?.image} alt="" />
-                                                <p>{pro?.productName}</p>
-                                                <p>{pro?.amountPayment}</p>
-                                                <p>{pro?.exportPrice}</p>
-                                            </div>
-                                        </Box>
-                                    </Fade>
-                                </Modal>
-                            </div>
-                        ))))}
+                    {order?.map((item: any, idx: number) => (
+                        <div key={idx} onClick={() => {
+                            handleOpen(item?.products)
+                            setStatus(item?.status)
+                            setId(item?._id)
+                        }} className="data-order">
+                            <p style={{ width: '25%', textAlign: 'left', marginLeft: '10px', color: '#1B4242' }}>{item?._id.substring(item?._id.length - 8, item?._id.length)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242' }}>{handleConvertTimeStamp(item?.updatedAt)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242' }}>{handleCalculateTotalPrice(item?.products)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242' }}>{handleChangeStatusOrder(item?.status)}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
             <Footer />
+            <CustomModal isOpen={open} handleClose={handleClose} style={{
+                width: '900px', height: '600px',
+                background: '#EEF296', outline: '1px solid gray', borderRadius: '12px'
+            }}>
+                <>
+                    <p style={{ fontSize: '24px', fontWeight: '600', textAlign: 'center', color: '#FF8F8F' }}>Chi tiết đơn hàng</p>
+                    <img className="icon-cancel" onClick={handleClose} src={CancelIcon} alt="" />
+                    <hr />
+                    <div style={{ display: 'flex', margin: '10px 10px' }}>
+                        <p style={{ width: '20%', fontWeight: '600', fontSize: '18px' }}>Hình ảnh</p>
+                        <p style={{ width: '20%', fontWeight: '600', fontSize: '18px' }}>Tên sản phẩm</p>
+                        <p style={{ width: '20%', fontWeight: '600', fontSize: '18px' }}>Số lượng</p>
+                        <p style={{ width: '20%', fontWeight: '600', fontSize: '18px' }}>Đơn giá</p>
+                        <p style={{ width: '20%', fontWeight: '600', fontSize: '18px' }}>Thành tiền</p>
+                    </div>
+                    <hr />
+                    {orderSelected?.map((item: any, idx: number) => (
+                        <div className="sub-data-order">
+                            <div style={{ width: '20%' }}>
+                                <img className="product-img" src={item?.image} alt="" />
+                            </div>
+                            <p>{item?.productName}</p>
+                            <p>{item?.quantity}</p>
+                            <p>{item?.exportPrice}</p>
+                            <p>{parseInt(item?.quantity) * parseInt(item?.exportPrice)}</p>
+                        </div>
+                    ))}
+                    {status === 1 &&
+                        <Button style={{
+                            position: 'absolute',
+                            bottom: '0',
+                            right: '0',
+                            margin: '0 10px 10px 0',
+                            background: '#FF8F8F',
+                            color: 'white'
+                        }}
+                            onClick={() => handleUpdateStatusOrder(id)}
+
+                        >Huỷ đơn hàng</Button>
+                    }
+                </>
+            </CustomModal>
         </>
     )
 }

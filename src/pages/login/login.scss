@@ -43,6 +43,45 @@
             color: brown;
         }
 
+        .form-login {
+            display: grid;
+        }
+
+        .label-name-item {
+            margin: 10px 20px;
+            font-weight: 600;
+
+            span {
+                color: red;
+                font-size: 18px;
+            }
+        }
+
+        .textfield-data-item {
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 8px;
+            outline: none;
+            margin: 0 20px;
+        }
+
+        .toast-message {
+            color: red;
+            margin: 0 20px;
+        }
+
+        .save-data {
+            margin: auto;
+            width: 100px;
+            height: 30px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid gray;
+            border-radius: 8px;
+            cursor: pointer;
+
+        }
+
         .loginItem {
             display: flex;
             // margin: 20px 150px;

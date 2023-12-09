@@ -11,8 +11,12 @@ import StarchIcon from '../../assets/icons/starch.png'
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
 import axios from "axios";
+import EmptyCartIcon from '../../assets/icons/empty-cart.png'
+import { Button } from "@mui/material";
+
 
 interface Products {
+    image: string,
     productId: string,
     productName: string,
     quantity: string,
@@ -42,11 +46,15 @@ const Cart = () => {
         }
     }
 
-    const handleDeleteProductInCart = async (data?: any) => {
+    const handleDeleteProductInCart = async (data?: string) => {
         try {
-            const res = await axios.post(`https://healthcare-bkmr.onrender.com/api/cart/delete/${localStorage.getItem('id')}`, {
-                ...data
+            const res = await axios.delete(`https://healthcare-bkmr.onrender.com/api/cart/delete/${localStorage.getItem('id')}`, {
+                data: {
+                    productId: data
+                }
             })
+            console.log(data);
+
             console.log('res: ', res);
             alert("xoá sản phẩm ra giỏi hàng thành công")
             handleGetCart()
@@ -55,11 +63,6 @@ const Cart = () => {
             console.log(err)
         }
     }
-
-    console.log('cart: ', cart);
-
-
-
 
     React.useEffect(() => {
         handleGetCart()
@@ -84,48 +87,61 @@ const Cart = () => {
         <div className="cart-container">
             <p className="label-cart">Giỏ hàng</p>
             <hr style={{ margin: '4px 20%' }} />
-            <div className="item-label">
-                <p style={{ width: '10%' }}>Hình ảnh</p>
-                <p style={{ width: '30%', textAlign: 'left' }}>Tên sản phẩm</p>
-                <p style={{ width: '15%', textAlign: 'left' }}>Đơn giá</p>
-                <p style={{ width: '15%', textAlign: 'left' }}>Số lượng</p>
-                <p style={{ width: '20%', textAlign: 'left' }}>Thành tiền</p>
-                <p style={{ width: '10%', textAlign: 'left' }}>Thao tác</p>
-            </div>
-            <div className="data-product-container">
-                {cart?.map((item: any, idx: number) => (
-                    <div key={idx} className="data-product">
-                        <div style={{ width: '10%' }}>
-                            <img className="img-product" src={item?.image} alt="" />
-                        </div>
-                        <p style={{ width: '30%', textAlign: 'left' }}>{item?.productName}</p>
-                        <p style={{ width: '15%', textAlign: 'left' }}>{item?.exportPrice}</p>
-                        <div className="amount-container">
-                            <p className="decrease">-</p>
-                            <input className="input-amount" type="number" value={item?.quantity} />
-                            <p className="increase">+</p>
-                        </div>
-                        <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(item?.quantity) * parseInt(item?.exportPrice)}</p>
-                        <div style={{ width: '10%', margin: 'auto' }}>
-                            <img className="trash-icon" src={TrashIcon} alt="" onClick={() => {
-                                handleDeleteProductInCart(item?.productId);
-                            }} />
-                        </div>
+            {
+                cart.length === 0 ?
+                    <div className="empty-cart">
+                        <img className="empty-icon" src={EmptyCartIcon} alt="" />
+                        <p className="empty-label">Giỏ hàng của bạn còn trống</p>
+                        <Button className="empty-button" onClick={() => navigation('/')}>Mua Ngay</Button>
                     </div>
-                ))}
-                <hr />
-                <div className="shipp">
-                    <img className="shipp-icon" src={FreeShippIcon} alt="" />
-                    <p>Miễn phí vận chuyển cho những đơn hàng trong vòng bán kính 5km</p>
-                </div>
-            </div>
-            <div className="payment">
-                <p style={{ margin: '32px 5px 0 0', fontSize: '24px' }}>Tổng thanh toán:</p>
-                <p className="label-payment">{calculateSummary()}(đ)</p>
-                <div className="btn-pay" onClick={() => navigation('/payment')}>
-                    <p style={{ cursor: 'pointer' }}>Mua hàng</p>
-                </div>
-            </div>
+                    :
+                    <>
+                        <div className="data-product-container">
+                            <div className="item-label">
+                                <p style={{ width: '10%' }}>Hình ảnh</p>
+                                <p style={{ width: '30%', textAlign: 'left' }}>Tên sản phẩm</p>
+                                <p style={{ width: '15%', textAlign: 'left' }}>Đơn giá</p>
+                                <p style={{ width: '15%', textAlign: 'left' }}>Số lượng</p>
+                                <p style={{ width: '20%', textAlign: 'left' }}>Thành tiền</p>
+                                <p style={{ width: '10%', textAlign: 'left' }}>Thao tác</p>
+                            </div>
+                            {cart?.map((item: any, idx: number) => (
+                                <div key={idx} className="data-product">
+                                    <div style={{ width: '10%' }}>
+                                        <img className="img-product" src={item?.image} alt="" />
+                                    </div>
+                                    <p style={{ width: '30%', textAlign: 'left' }}>{item?.productName}</p>
+                                    <p style={{ width: '15%', textAlign: 'left' }}>{item?.exportPrice}</p>
+                                    <div className="amount-container">
+                                        <p className="decrease">-</p>
+                                        <input className="input-amount" type="number" value={item?.quantity} />
+                                        <p className="increase">+</p>
+                                    </div>
+                                    <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(item?.quantity) * parseInt(item?.exportPrice)}</p>
+                                    <div style={{ width: '10%', margin: 'auto' }}>
+                                        <img className="trash-icon" src={TrashIcon} alt="" onClick={(e) => {
+                                            handleDeleteProductInCart(item?.productId);
+                                        }} />
+                                    </div>
+                                </div>
+                            ))}
+                            <hr />
+                            <div className="shipp">
+                                <img className="shipp-icon" src={FreeShippIcon} alt="" />
+                                <p>Miễn phí vận chuyển cho những đơn hàng trong vòng bán kính 5km</p>
+                            </div>
+                        </div>
+                        <div className="payment">
+                            <p style={{ margin: '32px 5px 0 0', fontSize: '24px' }}>Tổng thanh toán:</p>
+                            <p className="label-payment">{calculateSummary()}(đ)</p>
+                            <div className="btn-pay" onClick={() => {
+                                navigation('/payment')
+                            }}>
+                                <p>Mua hàng</p>
+                            </div>
+                        </div>
+                    </>
+            }
             <p className="label-other">CÓ THỂ BẠN SẼ QUAN TÂM</p>
             <div className="productMenu">
                 <div className="productCategory">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import './register.scss'
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -61,43 +61,43 @@ const Register = () => {
                 >
                     <p className="label-data">Đăng ký</p>
                     <label className="label-name-item">Tên đăng nhập<span>*</span></label>
-                    <input className="textfield-data-item"  {...register("username", { required: true, maxLength: 20 })} />
-                    {errors.username && <p className="toast-message">Trường này là bắt buộc</p>}
+                    <input className="textfield-data-item"  {...register("username", { required: true, minLength: 8 })} />
+                    {errors.username && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 8 kí tự</p>}
                     <label className="label-name-item">Mật khẩu</label>
                     <input className="textfield-data-item"
-                        {...register("password", { required: true, maxLength: 20 })}
+                        {...register("password", { required: true, minLength: 6, })}
                     />
-                    {errors.password && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.password && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 6 kí tự</p>}
                     <label className="label-name-item">Tên người dùng</label>
                     <input className="textfield-data-item"
-                        {...register("name", { required: true, maxLength: 50 })}
+                        {...register("name", { required: true, pattern: /^[A-Za-z]+$/i, minLength: 8 })}
                     />
-                    {errors.name && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.name && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 10 kí tự</p>}
                     <label className="label-name-item">Số lượng người lớn trong gia đình</label>
                     <input className="textfield-data-item"
-                        {...register("adult", { required: true, maxLength: 2, valueAsNumber: true })}
+                        {...register("adult", { required: true, min: 1, max: 9, valueAsNumber: true })}
                     />
-                    {errors.adult && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.adult && <p className="toast-message">Trường này là bắt buộc giá trị nằm trong khoảng 1 - 9</p>}
                     <label className="label-name-item">Số lượng trẻ em trong gia đình</label>
                     <input className="textfield-data-item"
-                        {...register("child", { required: true, maxLength: 2, valueAsNumber: true })}
+                        {...register("child", { required: true, min: 0, max: 9, valueAsNumber: true })}
                     />
-                    {errors.child && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.child && <p className="toast-message">Trường này là bắt buộc giá trị nằm trong khoảng 0 - 9</p>}
                     <label className="label-name-item">Số điện thoại</label>
                     <input className="textfield-data-item"
-                        {...register("phone", { required: true })}
+                        {...register("phone", { required: true, minLength: 10 })}
                     />
-                    {errors.phone && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.phone && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 10 kí tự</p>}
                     <label className="label-name-item">Email</label>
                     <input className="textfield-data-item"
-                        {...register("email", { required: true })}
+                        {...register("email", { required: true, minLength: 20 })}
                     />
-                    {errors.email && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.email && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 20 kí tự</p>}
                     <label className="label-name-item">Địa chỉ</label>
                     <input className="textfield-data-item"
-                        {...register("address", { required: true })}
+                        {...register("address", { required: true, minLength: 8 })}
                     />
-                    {errors.address && <p className="toast-message">Trường này là bắt buộc</p>}
+                    {errors.address && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 8 kí tự</p>}
                     <input className="save-data" value="Đăng ký" type="submit" />
                     <div className="go-login">
                         <p>Bạn đã có tài khoản?
