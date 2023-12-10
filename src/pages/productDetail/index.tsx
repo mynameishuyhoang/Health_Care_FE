@@ -8,6 +8,7 @@ import Footer from "../../components/footer";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toastMessage } from "../../components/message";
+import TextField from "@mui/material/TextField";
 
 interface ProductsProps {
     products?: any
@@ -40,6 +41,7 @@ const ProductDetail = (props: ProductsProps) => {
         }
         catch (err) {
             console.log(err)
+            toastMessage('error', `Thêm sản phẩm vào giỏ hàng không thành công`)
         }
     }
 
@@ -58,50 +60,72 @@ const ProductDetail = (props: ProductsProps) => {
     return (
         <>
             <div className="pdContainer">
-                <div className="name-a-price">
-                    <div style={{ display: 'flex' }}>
-                        <p style={{ margin: '8px 4px 8px 0' }}>Tên sản phẩm:</p>
-                        <p className="name">{state.product.name}</p>
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p style={{ margin: '8px 4px 8px 0' }}>Đơn vị tính:</p>
-                        <p className="unit">100 Gram</p>
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p style={{ margin: '8px 4px 8px 0' }}>Đơn giá:</p>
-                        <p className="price">{state.product.exportPrice} (đ)</p>
-                    </div>
-                </div>
-                <hr />
                 <div className="navContainer">
                     <div className="product-detail">
                         <img className="imgProduct" src={state.product.image} alt="" />
                         <div className="sub-product-detail">
-                            <div className="transport">
-                                <p style={{
-                                    fontWeight: '600 '
-                                }}>Vận chuyển</p>
-                                <div className="sub-transport">
-                                    <div className="order-process">
-                                        <img className="order-process-icon" src={OrderProcessingIcon} alt="" />
-                                        <p>Xử lý đơn hàng bởi Health Care</p>
-                                    </div>
-                                    <div className="shipp">
-                                        <img className="shipp-icon" src={FreeShippIcon} alt="" />
-                                        <p>Miễn phí vận chuyển</p>
+                            <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <p style={{ margin: '8px 4px 8px 0', fontWeight: '600' }}>Tên sản phẩm</p>
+                                    <p style={{
+                                        margin: '8px 0',
+                                        fontSize: '18px',
+                                        fontWeight: 600,
+                                        color: "#B31312"
+                                    }}>{state.product.name}</p>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <p style={{ margin: '8px 4px 8px 0', fontWeight: '600' }}>Khối lượng</p>
+                                    <p style={{
+                                        fontWeight: 600,
+                                        margin: '8px 0'
+                                    }}>100 gram</p>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <p style={{ margin: '8px 4px 8px 0', fontWeight: '600' }}>Đơn giá</p>
+                                    <p style={{
+                                        fontWeight: 600,
+                                        margin: '8px 0'
+                                    }}>{state.product.exportPrice} (đ)</p>
+                                </div>
+                                <div className="transport">
+                                    <p style={{
+                                        fontWeight: '600 '
+                                    }}>Thông tin</p>
+                                    <div className="sub-transport">
+                                        <div className="order-process">
+                                            <img className="order-process-icon" src={OrderProcessingIcon} alt="" />
+                                            <p style={{ color: "#B31312" }}>Xử lý đơn hàng bởi Health Care</p>
+                                        </div>
+                                        <div className="shipp">
+                                            <img className="shipp-icon" src={FreeShippIcon} alt="" />
+                                            <p>Miễn phí vận chuyển</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="amount">
-                                <p style={{
-                                    fontWeight: '600 '
-                                }}>Số lượng</p>
-                                <div className="sub-amount">
-                                    <p className="decrease" onClick={handleDecreaseAmount}>-</p>
-                                    <input className="input-amount" type="number" value={quantity} />
-                                    <p className="increase" onClick={handleIncreaseAmount}>+</p>
+                                <div className="amount">
+                                    <p style={{
+                                        fontWeight: '600 '
+                                    }}>Số lượng</p>
+                                    <div className="sub-amount">
+                                        <div className="change-quantity" onClick={handleDecreaseAmount}>
+                                            <p>-</p>
+                                        </div>
+                                        <TextField
+                                            id="outlined-number"
+                                            // label="Số lượng"
+                                            type="number"
+                                            value={quantity}
+                                            style={{ width: '85px' }}
+                                        />
+                                        <div className="change-quantity" onClick={handleIncreaseAmount}>
+                                            <p className="plus">+</p>
+                                        </div>
+                                    </div>
                                 </div>
+                                <p style={{ display: 'flex', justifyContent: 'flex-end', fontWeight: '600' }}>{state?.product?.amount} sản phẩm có sẵn</p>
                             </div>
+                            <hr style={{ marginTop: '16px' }} />
                             <div className="buy-a-add">
                                 <div className="btn-buy" onClick={(e) => handleAddProductToCart()}>
                                     <p>Mua ngay</p>

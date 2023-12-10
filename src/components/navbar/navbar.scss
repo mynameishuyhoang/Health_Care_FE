@@ -23,6 +23,7 @@
         .label-cart {
             text-decoration: none;
             margin: 40px 20px 40px 0px;
+            font-weight: 600;
         }
 
         .imgLogin {
@@ -44,7 +45,7 @@
 .header {
     display: flex;
     justify-content: center;
-    background-color: gray;
+    background-color: #5C8374;
     height: 60px;
 
     hr {
@@ -55,15 +56,17 @@
         text-decoration: none;
         width: 200px;
         height: 60px;
+        cursor: pointer;
 
         p {
             text-align: center;
             color: white;
+            font-weight: 600;
         }
     }
 
     .link:hover {
-        background-color: rgb(40, 150, 58);
-
+        background-color: #6eaa93;
+        transition: 400ms;
     }
 }

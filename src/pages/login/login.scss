@@ -82,41 +82,6 @@
 
         }
 
-        .loginItem {
-            display: flex;
-            // margin: 20px 150px;
-            justify-content: center;
-            margin: 20px 0;
-
-            .label {
-                margin: 5px 20px;
-                min-width: 80px;
-            }
-
-            .inputLogin {
-                min-width: 300px;
-                max-width: 300px;
-                outline: none;
-                border: 1px solid gray;
-                border-radius: 4px;
-                padding: 8px;
-            }
-        }
-
-        .btnLogin {
-            background: blue;
-            color: white;
-            width: 100px;
-            height: 50px;
-            margin: auto;
-            text-align: center;
-            padding-top: 1px;
-            border-radius: 5px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-
         .textForgotPw {
             text-align: end;
             margin-right: 165px;

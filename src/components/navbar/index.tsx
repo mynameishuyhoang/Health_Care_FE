@@ -64,7 +64,10 @@ const Navbar = () => {
                                     style={{ color: 'red' }}
                                 >
                                     <img className="imgLogin" src={login} alt="Người dùng" />
-                                    {localStorage.getItem('name')}
+                                    <p style={{
+                                        fontWeight: 600,
+                                        color: "#527853"
+                                    }}>{localStorage.getItem('name')}</p>
                                 </Button>
                                 <Menu
                                     id="basic-menu"

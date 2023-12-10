@@ -6,6 +6,8 @@ import ShipIcon from '../../assets/icons/go-shipp.png'
 import Footer from "../../components/footer";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { toastMessage } from "../../components/message";
+import { useNavigate } from "react-router-dom";
 
 interface Customer {
     name: string
@@ -32,6 +34,7 @@ const Payment = () => {
     const [dataCustomer, setDataCustomer] = useState<Customer>()
     const [order, setOrder] = useState<Order[]>([])
     const [orderRes, setOrderRes] = useState<any>()
+    const navigation = useNavigate()
 
     const handleGetCustomer = async () => {
         try {
@@ -73,8 +76,12 @@ const Payment = () => {
                 ...dataPayload
             })
             console.log('dataOrder: ', data)
+            toastMessage('success', 'Đặt hàng thành công')
+
 
         } catch (error) {
+            console.log(error);
+            toastMessage('error', 'Đặt hàng không thành công')
 
         }
     }
@@ -117,7 +124,18 @@ const Payment = () => {
                 ...data
             })
             console.log('res: ', res);
-            alert("Cập nhật thành công")
+            toastMessage('success', 'Cập thật thông tin khách hàng thành công')
+        }
+        catch (err) {
+            console.log(err);
+            toastMessage('error', 'Cập thật thông tin khách hàng không thành công')
+        }
+    }
+
+    const handleClearCart = async (cartId?: string) => {
+        try {
+            const res = await axios.delete(`https://healthcare-bkmr.onrender.com/api/cart/delete/${cartId}`)
+            console.log('res: ', res);
         }
         catch (err) {
             console.log(err);
@@ -252,7 +270,11 @@ const Payment = () => {
                     }}>{calculateSummary() + 35000} (đ)</p>
                 </div>
                 <hr />
-                <div className="order" onClick={handleAddToOrder}>
+                <div className="order" onClick={() => {
+                    handleAddToOrder()
+                    handleClearCart(orderRes?._id)
+                    navigation('/history')
+                }}>
                     <p>Đặt hàng</p>
                 </div>
             </div>

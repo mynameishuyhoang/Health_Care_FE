@@ -1,36 +1,16 @@
 .pdContainer {
     margin: 0 10%;
 
-    .name-a-price {
-        display: flex;
-        justify-content: space-between;
-        font-size: 24px;
-
-        .name {
-            color: violet;
-            margin: 8px 0;
-        }
-
-        .unit {
-            color: rgb(1, 168, 1);
-            margin: 8px 0;
-        }
-
-        .price {
-            color: red;
-            margin: 8px 0;
-
-        }
-    }
-
     .navContainer {
         .product-detail {
             display: flex;
             justify-content: space-around;
+            margin-top: 20px;
+            margin-bottom: 20px;
 
             .imgProduct {
-                width: 500px;
-                height: 500px;
+                width: 350px;
+                height: 350px;
                 outline: none;
                 border: 1px solid gray;
                 border-radius: 4px;
@@ -38,6 +18,9 @@
             }
 
             .sub-product-detail {
+
+                .order-wrapper {}
+
                 .promotion {
                     display: flex;
                     justify-content: space-between;
@@ -63,6 +46,7 @@
 
                         .shipp {
                             display: flex;
+                            justify-content: end;
 
                             .shipp-icon {
                                 width: 25px;
@@ -80,29 +64,29 @@
                     .sub-amount {
                         display: flex;
 
-                        .decrease {
+                        .change-quantity {
+                            width: 40px;
+                            height: 40px;
                             outline: none;
                             border: 1px solid gray;
-                            border-radius: 2px;
-                            margin: auto;
-                            padding: 8px;
-                            cursor: pointer
-                        }
+                            border-radius: 50%;
+                            cursor: pointer;
+                            margin: 8px 1px;
 
-                        .input-amount {
-                            width: 70px;
-                            margin: 7px 0px;
-                            outline: none;
-                            border: 1px solid gray;
-                        }
+                            p {
+                                font-size: 24px;
+                                font-weight: 600;
+                                margin-top: 4px;
+                                margin-left: 15px;
+                            }
 
-                        .increase {
-                            outline: none;
-                            border: 1px solid gray;
-                            border-radius: 2px;
-                            margin: auto;
-                            padding: 8px;
-                            cursor: pointer
+                            .plus {
+                                margin-top: 5px;
+                            }
+
+                            &:hover {
+                                background: whitesmoke;
+                            }
                         }
                     }
 
@@ -115,10 +99,12 @@
                     .btn-buy {
                         display: flex;
                         width: 120px;
+                        height: 35px;
+                        justify-content: space-around;
                         outline: none;
-                        border: 2px solid gray;
+                        // border: 2px solid gray;
                         margin: auto;
-                        padding: 4px;
+                        padding: 8px;
                         cursor: pointer;
                         text-align: center;
                         background-color: rgb(250, 247, 247);
@@ -128,47 +114,61 @@
                         // transform: translate(-50%, -50%);
                         box-shadow: 11px 8px 24px 5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
                         border-radius: 15px;
-                        background-color: red;
+                        background-color: #5FBDFF;
                         margin-right: 10px;
                         color: white;
 
+                        p {
+                            margin-top: 7px;
+                            font-weight: 600;
+                        }
+
                         &:hover {
-                            background-color: rgb(223, 3, 3);
+                            background-color: #2ca1f5;
 
                         }
 
                         .pay-icon {
-                            margin-left: 5px;
-                            width: 40px;
+                            margin-top: 3px;
+                            width: 30px;
+                            height: 30px;
                         }
                     }
 
                     .btn-add-cart {
                         display: flex;
+                        justify-content: space-around;
                         width: 200px;
+                        height: 35px;
                         outline: none;
-                        border: 2px solid gray;
+                        // border: 2px solid gray;
                         margin: auto;
-                        padding: 4px;
+                        padding: 8px;
                         cursor: pointer;
                         text-align: center;
-                        background-color: rgb(250, 247, 247);
                         position: relative;
                         // top: 50%;
                         // left: 50%;
                         // transform: translate(-50%, -50%);
                         box-shadow: 11px 8px 24px 5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
                         border-radius: 15px;
-                        background-color: rgb(222, 248, 222);
+
+                        background-color: #C1F2B0;
+
+                        p {
+                            margin-top: 7px;
+                            font-weight: 600;
+                        }
 
                         &:hover {
-                            background-color: rgb(181, 247, 181);
+                            background-color: #8ff36e;
 
                         }
 
                         .add-cart {
-                            margin-left: 5px;
-                            width: 50px;
+                            margin-top: 3px;
+                            width: 25px;
+                            height: 25px;
                         }
                     }
                 }
@@ -178,23 +178,30 @@
 
     .label-nutrition {
         font-size: 24px;
-        color: red;
+        color: #5C8374;
         font-weight: 600;
-        text-decoration: underline;
+        // text-decoration: underline;
     }
 
     .table-nutrition {
         width: 60%;
         border-collapse: collapse;
         border: 1px solid;
-        margin-left: 20%;
-        margin-right: 20%;
+        text-align: center;
+        margin: 0 20%;
+        margin-bottom: 20px;
+
+        thead {
+            background-color: #96EFFF;
+        }
 
         tr {
             border: 1px solid;
+            padding: 9px;
         }
 
         th {
+            padding: 9px;
             border: 1px solid;
         }
 
@@ -205,13 +212,15 @@
 
         .nutrition-item {
             font-weight: 600;
+            color: #527853;
+            font-size: 18px;
         }
     }
 
     .label-product-detail {
         font-size: 24px;
-        color: red;
+        color: #5C8374;
         font-weight: 600;
-        text-decoration: underline;
+        // text-decoration: underline;
     }
 }

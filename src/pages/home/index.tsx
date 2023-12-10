@@ -14,6 +14,8 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import axios from "axios";
 import { Button } from "@mui/material";
+import CustomLoading from "../../components/loading";
+import TextField from '@mui/material/TextField';
 
 const Home = () => {
     const [products, setProducts] = useState()
@@ -21,10 +23,11 @@ const Home = () => {
     const [categoryId, setCategoryId] = useState('')
     const [totalPage, setTotalPage] = useState(1)
     const [pageNumber, setPageNumber] = useState(1)
-    // const [totalPage, setTotalPage] = useState(1)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     const handleGetAndFilterProduct = async (productName?: string, categoryId?: string, pageSize?: number, pageNumber?: number) => {
+        setIsLoading(true)
         try {
             const { data } = await axios.post(`https://healthcare-bkmr.onrender.com/api/product/get`, null, {
                 params: {
@@ -39,9 +42,11 @@ const Home = () => {
 
             setProducts(data?.data)
             setTotalPage(data?.totalPage)
+            setIsLoading(false)
 
         } catch (err) {
             console.log(err)
+            setIsLoading(false)
         }
     }
 
@@ -55,13 +60,21 @@ const Home = () => {
 
     const handleFilterCategory = (category: string) => {
         setCategoryId(category)
-        handleGetAndFilterProduct(productName, category)
+        setProductName('')
+        handleGetAndFilterProduct('', category)
     }
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPageNumber(value);
         handleGetAndFilterProduct(productName, categoryId, 12, value)
     };
+
+    const _handleKeyDown = (e: any) => {
+        if (e.key === 'Enter') {
+            console.log('do validate');
+            handleGetAndFilterProduct(productName, categoryId)
+        }
+    }
 
     React.useEffect(() => {
         handleGetAndFilterProduct('', '', 12, 1)
@@ -105,11 +118,20 @@ const Home = () => {
                     <p>Tinh bột</p>
                 </div>
             </div>
+            <hr />
             <div className="search-product">
-                <input type="text" placeholder="Nhập tên sản phẩm cần tìm kiếm...." onChange={(e) => { handleSearchingProductName(e.target.value) }} />
+                <input type="text" placeholder="Nhập tên sản phẩm cần tìm kiếm...." value={productName} onChange={(e) => { handleSearchingProductName(e.target.value) }} onKeyDown={_handleKeyDown} />
                 <Button onClick={() => handleGetAndFilterProduct(productName, categoryId)}>Tìm kiếm</Button>
             </div>
-            <ProductCard products={products} />
+            <hr />
+            {isLoading ?
+                <CustomLoading style={{
+                    textAlign: 'center',
+                    padding: '40px'
+                }} />
+                :
+                <ProductCard products={products} />
+            }
             <Stack spacing={2} style={{ marginBottom: '20px' }}>
                 <Pagination className="pagination-container" color="primary" count={totalPage} page={pageNumber} onChange={handleChange} />
             </Stack>

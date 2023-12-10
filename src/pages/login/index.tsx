@@ -33,7 +33,6 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
             .catch(function (error) {
                 console.log(error);
                 console.log();
-                
                 toastMessage('error', 'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại')
             });
     }
@@ -86,30 +85,6 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
                         {errors.password && <p className="toast-message">Mật khẩu không được được để trống</p>}
                         <input className="save-data" value="Đăng nhập" type="submit" />
                     </form>
-                    {/* <div style={{ margin: 'auto' }}>
-                    <p className="labelLogin">Đăng nhập</p>
-                    <div className="loginItem">
-                        <p className="label">Username </p>
-                        <input className="inputLogin"
-                            type="text"
-                            value={username}
-                            onChange={(e) => handleChange(e.target.value, 'username')} />
-                    </div>
-                    <div className="loginItem">
-                        <p className="label">Password </p>
-                        <input className="inputLogin"
-                            type="password"
-                            value={password}
-                            onChange={(e) => handleChange(e.target.value, 'password')}
-                            onKeyDown={_handleKeyDown} />
-                    </div>
-                    <div className="textForgotPw">
-                        <NavLink className="goForgotPassword" to='/'>Quên mật khẩu?</NavLink>
-                    </div>
-                    <div className="btnLogin"
-                        onClick={handleSubmitLogin}>
-                        <p>Đăng nhập</p>
-                    </div> */}
                     <div className="goRegister">
                         <p>Bạn chưa có tài khoản?
                             <NavLink to='/register'>Đăng ký ngay.</NavLink>

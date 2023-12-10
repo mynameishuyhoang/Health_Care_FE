@@ -6,6 +6,7 @@ import moment from "moment";
 import CustomModal from "../../components/modal";
 import CancelIcon from '../../assets/icons/cancel.png'
 import { Button } from "@mui/material";
+import { toastMessage } from "../../components/message";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -27,6 +28,7 @@ interface Order {
 
 interface ProductOrder {
     productId: string,
+    image: string,
     productName: string,
     amountPayment: number,
     exportPrice: number
@@ -64,9 +66,10 @@ const History = () => {
             })
             console.log('order-data: ', data?.data);
             setOrder(data?.data?.data)
+            toastMessage('success', 'Huỷ đặt hàng thành công')
+            handleGetOrder()
         } catch (error) {
             console.log(error);
-
         }
     }
 
@@ -124,10 +127,10 @@ const History = () => {
                             setStatus(item?.status)
                             setId(item?._id)
                         }} className="data-order">
-                            <p style={{ width: '25%', textAlign: 'left', marginLeft: '10px', color: '#1B4242' }}>{item?._id.substring(item?._id.length - 8, item?._id.length)}</p>
-                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242' }}>{handleConvertTimeStamp(item?.updatedAt)}</p>
-                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242' }}>{handleCalculateTotalPrice(item?.products)}</p>
-                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242' }}>{handleChangeStatusOrder(item?.status)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', marginLeft: '10px', color: '#1B4242', fontWeight: 600 }}>{item?._id.substring(item?._id.length - 8, item?._id.length)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242', fontWeight: 600 }}>{handleConvertTimeStamp(item?.updatedAt)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242', fontWeight: 600 }}>{handleCalculateTotalPrice(item?.products)}</p>
+                            <p style={{ width: '25%', textAlign: 'left', color: '#1B4242', fontWeight: 600 }}>{handleChangeStatusOrder(item?.status)}</p>
                         </div>
                     ))}
                 </div>

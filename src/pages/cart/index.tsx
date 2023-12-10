@@ -13,6 +13,7 @@ import Footer from "../../components/footer";
 import axios from "axios";
 import EmptyCartIcon from '../../assets/icons/empty-cart.png'
 import { Button } from "@mui/material";
+import { toastMessage } from "../../components/message";
 
 
 interface Products {
@@ -56,11 +57,12 @@ const Cart = () => {
             console.log(data);
 
             console.log('res: ', res);
-            alert("xoá sản phẩm ra giỏi hàng thành công")
+            toastMessage('success', `Xoá sản phẩm ra khỏi giỏ hàng thành công`)
             handleGetCart()
 
         } catch (err) {
             console.log(err)
+            toastMessage('err', `Xoá không thành công`)
         }
     }
 
