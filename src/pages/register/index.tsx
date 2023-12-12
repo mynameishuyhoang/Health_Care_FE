@@ -70,7 +70,7 @@ const Register = () => {
                     {errors.password && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 6 kí tự</p>}
                     <label className="label-name-item">Tên người dùng</label>
                     <input className="textfield-data-item"
-                        {...register("name", { required: true, pattern: /^[A-Za-z]+$/i, minLength: 8 })}
+                        {...register("name", { required: true, minLength: 10 })}
                     />
                     {errors.name && <p className="toast-message">Trường này là bắt buộc và phải lớn hơn 10 kí tự</p>}
                     <label className="label-name-item">Số lượng người lớn trong gia đình</label>

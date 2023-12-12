@@ -11,6 +11,8 @@ import History from "./pages/history";
 
 function App() {
 
+  const name = localStorage.getItem('name')
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -22,7 +24,7 @@ function App() {
         },
         {
           path: '/cart/:id',
-          element: <Cart />
+          element: name && <Cart />
         },
         {
           path: '/product-detail/:id',
@@ -34,11 +36,11 @@ function App() {
         },
         {
           path: '/account/:id',
-          element: <Account />
+          element: name && <Account />
         },
         {
-          path: '/history',
-          element: <History />
+          path: '/history/:id',
+          element: name && <History />
         },
       ]
     },

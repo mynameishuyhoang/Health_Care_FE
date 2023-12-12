@@ -84,7 +84,7 @@ const Navbar = () => {
                                     }}>Tài khoản</MenuItem>
                                     <MenuItem onClick={(e) => {
                                         handleClose()
-                                        navigate('/history')
+                                        navigate(`/history/${localStorage.getItem('id')}`)
                                     }}>Lịch sử mua hàng</MenuItem>
                                     <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                                 </Menu>
