@@ -30,10 +30,17 @@ interface Order {
     customerId: string
 }
 
+interface Ship {
+    shippName: string
+    shippPrice: number
+}
+
 const Payment = () => {
     const [dataCustomer, setDataCustomer] = useState<Customer>()
     const [order, setOrder] = useState<Order[]>([])
+    const [ship, setShip] = useState<Ship[]>([])
     const [orderRes, setOrderRes] = useState<any>()
+    const [shipPrice, setShipPrice] = useState<number>(0)
     const navigation = useNavigate()
 
     const handleGetCustomer = async () => {
@@ -89,6 +96,7 @@ const Payment = () => {
     useEffect(() => {
         handleGetCustomer()
         handleGetOrder()
+        handleGetShip()
     }, [])
 
     const calculateSummary = () => {
@@ -100,7 +108,7 @@ const Payment = () => {
             summary += productSummary;
         });
 
-        return summary;
+        return summary as number;
     }
 
     const {
@@ -140,6 +148,28 @@ const Payment = () => {
         catch (err) {
             console.log(err);
         }
+    }
+
+    const handleSetAmountProduct = async (data?: any) => {
+    }
+
+    const handleGetShip = async () => {
+        try {
+            const data = await axios.post('https://healthcare-bkmr.onrender.com/api/shipp')
+            console.log('dataShip', data);
+            setShip(data?.data?.data)
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    const handleChangeShipPrice = (val: any) => {
+        val === 'Giao hàng hoả tốc' ? setShipPrice(35000) : setShipPrice(20000)
+
+        console.log(shipPrice);
+
     }
 
     return (
@@ -210,9 +240,10 @@ const Payment = () => {
                 <div className="shipp-container">
                     <img style={{ width: '40px', marginRight: '10px' }} src={ShipIcon} alt="" />
                     <p style={{ marginRight: '20px', fontWeight: '600' }}>Đơn vị vận chuyển</p>
-                    <select style={{ marginLeft: '60px', width: '200px' }} name="" id="">
-                        <option value="">Nhanh</option>
-                        <option value="">Tiết kiệm</option>
+                    <select style={{ marginLeft: '60px', width: '200px' }} onChange={(e) => handleChangeShipPrice(e.target.value)}>
+                        {ship?.map((item: any, idx: number) => (
+                            <option value={item?.shippName}>{item?.shippName}</option>
+                        ))}
                     </select>
                 </div>
                 <hr />
@@ -253,7 +284,7 @@ const Payment = () => {
                         width: '150px',
                         margin: '10px 0',
                         fontWeight: '600'
-                    }}>35000 (đ)</p>
+                    }}>{shipPrice} (đ)</p>
                 </div>
                 <div className="data-payment">
                     <p style={{
@@ -267,7 +298,7 @@ const Payment = () => {
                         color: 'red',
                         fontSize: '20px',
                         fontWeight: '600'
-                    }}>{calculateSummary() + 35000} (đ)</p>
+                    }}>{calculateSummary() + shipPrice}(đ)</p>
                 </div>
                 <hr />
                 <div className="order" onClick={() => {

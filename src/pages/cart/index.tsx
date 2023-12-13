@@ -49,7 +49,7 @@ const Cart = () => {
 
     const handleDeleteProductInCart = async (data?: string) => {
         try {
-            const res = await axios.delete(`https://healthcare-bkmr.onrender.com/api/cart/delete/${localStorage.getItem('id')}`, {
+            const res = await axios.delete(`https://healthcare-bkmr.onrender.com/api/cart/deleteproduct/${localStorage.getItem('id')}`, {
                 data: {
                     productId: data
                 }

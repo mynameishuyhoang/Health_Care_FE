@@ -32,7 +32,6 @@ const Login = ({ handleCloseDlg = () => null }: Props) => {
             })
             .catch(function (error) {
                 console.log(error);
-                console.log();
                 toastMessage('error', 'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại')
             });
     }
