@@ -70,7 +70,7 @@
                 background-size: contain;
             }
 
-            .trash-icon {
+            .icon {
                 width: 25px;
                 cursor: pointer;
             }
@@ -230,5 +230,9 @@
         .productCategory:hover::before {
             left: 0;
         }
+    }
+
+    .field {
+        margin: 5px 0;
     }
 }

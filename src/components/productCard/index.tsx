@@ -23,11 +23,26 @@ const ProductCard = (props: ProductsProps) => {
                     <img className="product-img" src={item.image} alt="" />
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <p style={{
-                            fontWeight: 600
+                            fontWeight: 600,
+                            margin: '10px 0'
                         }}>{item.name}</p>
                         <p style={{
-                            color: 'red', fontWeight: 600,
+                            fontWeight: 600,
+                            margin: '10px 0'
                         }}>{item.exportPrice} (đ)</p>
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between'
+                    }}>
+                        <p style={{
+                            fontWeight: 600,
+                            margin: '5px 0'
+                        }}>Số lượng</p>
+                        <p style={{
+                            fontWeight: 600,
+                            margin: '5px 0'
+                        }}>{item.amount}</p>
                     </div>
                     <div>
                         <div style={{
@@ -106,85 +121,6 @@ const ProductCard = (props: ProductsProps) => {
                             }}>{item?.starch}</p>
                         </div>
                     </div>
-                    <div style={{
-                        display: 'flex',
-                    }}>
-                        <div style={{
-                            border: '1px solid gray',
-                            borderRadius: '50%',
-                            width: '30px',
-                            height: '30px',
-                            margin: '4px',
-                            color: 'white',
-                            background: '#00B8A9',
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                marginTop: '5px',
-                                marginLeft: '2px'
-                            }}>Cal</p>
-                        </div>
-                        <div style={{
-                            border: '1px solid gray',
-                            borderRadius: '50%',
-                            width: '30px',
-                            height: '30px',
-                            margin: '4px',
-                            color: 'white',
-                            background: '#F6416C',
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                marginTop: '5px',
-                                marginLeft: '2px'
-                            }}>Pro</p>
-                        </div>
-                        <div style={{
-                            border: '1px solid gray',
-                            borderRadius: '50%',
-                            width: '30px',
-                            height: '30px',
-                            margin: '4px',
-                            color: 'white',
-                            background: '#3282B8',
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                marginTop: '5px',
-                                marginLeft: '2px'
-                            }}>Lip</p>
-                        </div>
-                        <div style={{
-                            border: '1px solid gray',
-                            borderRadius: '50%',
-                            width: '30px',
-                            height: '30px',
-                            margin: '4px',
-                            color: 'white',
-                            background: '#6A2C70',
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                marginTop: '5px',
-                            }}>Sug</p>
-                        </div>
-                        <div style={{
-                            border: '1px solid gray',
-                            borderRadius: '50%',
-                            width: '30px',
-                            height: '30px',
-                            margin: '4px',
-                            color: 'white',
-                            background: '#7D5A50',
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                marginTop: '5px',
-                                marginLeft: '2px'
-                            }}>Sta</p>
-                        </div>
-                    </div>
-
                 </div>
             ))}
         </div>

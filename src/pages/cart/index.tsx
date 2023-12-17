@@ -12,8 +12,11 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
 import axios from "axios";
 import EmptyCartIcon from '../../assets/icons/empty-cart.png'
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { toastMessage } from "../../components/message";
+import EditIcon from '../../assets/icons/edit.png'
+import CancelIcon from '../../assets/icons/cancel.png'
+import CustomModal from "../../components/modal";
 
 
 interface Products {
@@ -35,6 +38,21 @@ const Cart = () => {
     const navigation = useNavigate()
 
     const [cart, setCart] = useState<Cart[]>([])
+    const [openEdit, setOpenEdit] = React.useState(false);
+    const [editSelected, setEditSelected] = React.useState<any>();
+    const [quantityUpdate, setQuantityUpdate] = React.useState<number>();
+
+
+    const handleOpenEdit = (listProducts?: any) => {
+        setEditSelected(listProducts)
+        setOpenEdit(true)
+    };
+
+    console.log("editSelected: ", editSelected);
+
+
+    const handleCloseEdit = () => setOpenEdit(false)
+
 
     const handleGetCart = async () => {
         try {
@@ -42,6 +60,21 @@ const Cart = () => {
             console.log('data: ', data?.data);
             setCart(data?.data?.products)
 
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleUpdateQuantityCart = async () => {
+        try {
+            const { data } = await axios.patch(`http://localhost:8000/api/cart/update`, {
+                quantity: quantityUpdate,
+                customerId: localStorage.getItem('id'),
+                productId: editSelected?.productId
+            })
+            toastMessage('success', 'Cập nhật số lượng sản phẩm thành công')
+            handleCloseEdit()
+            handleGetCart()
         } catch (err) {
             console.log(err)
         }
@@ -67,9 +100,10 @@ const Cart = () => {
     }
 
     React.useEffect(() => {
+        setQuantityUpdate(editSelected?.quantity)
         handleGetCart()
         window.scrollTo(0, 0)
-    }, [])
+    }, [openEdit])
 
 
     const calculateSummary = () => {
@@ -114,16 +148,15 @@ const Cart = () => {
                                     </div>
                                     <p style={{ width: '30%', textAlign: 'left' }}>{item?.productName}</p>
                                     <p style={{ width: '15%', textAlign: 'left' }}>{item?.exportPrice}</p>
-                                    <div className="amount-container">
-                                        <p className="decrease">-</p>
-                                        <input className="input-amount" type="number" value={item?.quantity} />
-                                        <p className="increase">+</p>
-                                    </div>
+                                    <p style={{ width: '15%', textAlign: 'left' }}>{item?.quantity}</p>
                                     <p style={{ width: '20%', textAlign: 'left' }}>{parseInt(item?.quantity) * parseInt(item?.exportPrice)}</p>
                                     <div style={{ width: '10%', margin: 'auto' }}>
-                                        <img className="trash-icon" src={TrashIcon} alt="" onClick={(e) => {
+                                        <img className="icon" src={TrashIcon} alt="" onClick={(e) => {
                                             handleDeleteProductInCart(item?.productId);
                                         }} />
+                                        <img className="icon" src={EditIcon} alt="" onClick={() =>
+                                            handleOpenEdit(item)
+                                        } />
                                     </div>
                                 </div>
                             ))}
@@ -172,6 +205,40 @@ const Cart = () => {
                 </div>
             </div>
             <Footer />
+            <CustomModal isOpen={openEdit} handleClose={handleCloseEdit} style={{
+                width: '900px', height: '400px',
+                background: 'white', outline: '1px solid gray', borderRadius: '12px'
+            }}>
+                <>
+                    <p style={{ fontSize: '24px', fontWeight: '600', textAlign: 'center', color: '#FF8F8F' }}>Cập nhật giỏ hàng</p>
+                    <img className="icon-cancel" onClick={handleCloseEdit} src={CancelIcon} alt="" />
+                    <hr />
+                    <div style={{
+                        display: 'grid',
+                        margin: '0 20%'
+                    }}>
+                        <TextField style={{ margin: '10px 0', color: 'red' }}
+                            disabled
+                            id="outlined-disabled"
+                            label="Tên sản phẩm"
+                            value={editSelected?.productName}
+                        />
+                        <TextField style={{ margin: '10px 0' }}
+                            disabled
+                            id="outlined-disabled"
+                            label="Đơn giá"
+                            value={editSelected?.exportPrice}
+                        />
+                        <TextField style={{ margin: '10px 0' }} id="outlined-basic" label="Số lượng" variant="outlined" type="number"
+                            value={quantityUpdate} onChange={(e) => {
+                                setQuantityUpdate(parseInt(e.target.value))
+                                console.log(quantityUpdate);
+                            }}
+                        />
+                        <Button style={{ color: 'white', background: '#88AB8E' }} onClick={handleUpdateQuantityCart}>Cập nhật</Button>
+                    </div>
+                </>
+            </CustomModal>
         </div>
     )
 }

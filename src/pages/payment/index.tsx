@@ -8,6 +8,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toastMessage } from "../../components/message";
 import { useNavigate } from "react-router-dom";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 interface Customer {
     name: string
@@ -205,7 +206,11 @@ const Payment = () => {
                         {...register("address", { required: true, })}
                     />
                     {errors.address && <p className="toast-message">This field is required</p>}
-                    <input className="save-data" value="Lưu" type="submit" />
+                    <input style={{
+                        padding: '8px',
+                        background: 'rgb(1, 167, 1)',
+                        color: 'white'
+                    }} className="save-data" value="Lưu" type="submit" />
                 </form>
             </div>
             <hr />
@@ -232,19 +237,47 @@ const Payment = () => {
                 <div className="voucher-container">
                     <img style={{ width: '40px', marginRight: '10px', }} src={VoucherIcon} alt="" />
                     <p style={{ fontWeight: '600' }}>Health Care Voucher</p>
-                    <select style={{ marginLeft: '60px', width: '200px' }} name="" id="">
+                    {/* <select style={{ marginLeft: '60px', width: '200px' }} name="" id="">
                         <option value="">Khuyến mãi</option>
-                    </select>
+                    </select> */}
+                    <FormControl style={{ width: '300px', marginLeft: '10px' }}>
+                        <InputLabel id="demo-simple-select-label">Voucher</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            // value={item?.shippName}
+                            label="Voucher"
+                            onChange={(e) => handleChangeShipPrice(e.target.value)}
+                        >
+                            {ship?.map((item: any, idx: number) => (
+                                <MenuItem key={idx} value={item?.shippName}>{item?.shippName}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </div>
                 <hr />
                 <div className="shipp-container">
                     <img style={{ width: '40px', marginRight: '10px' }} src={ShipIcon} alt="" />
                     <p style={{ marginRight: '20px', fontWeight: '600' }}>Đơn vị vận chuyển</p>
-                    <select style={{ marginLeft: '60px', width: '200px' }} onChange={(e) => handleChangeShipPrice(e.target.value)}>
+                    {/* <select style={{ marginLeft: '60px', width: '200px' }} onChange={(e) => handleChangeShipPrice(e.target.value)}>
                         {ship?.map((item: any, idx: number) => (
-                            <option value={item?.shippName}>{item?.shippName}</option>
+                            <option style={{ padding: '8px' }} value={item?.shippName}>{item?.shippName}</option>
                         ))}
-                    </select>
+                    </select> */}
+                    <FormControl style={{ width: '300px' }}>
+                        <InputLabel id="demo-simple-select-label">Đơn vị vận chuyển</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            // value={item?.shippName}
+                            label="Đơn vị vận chuyển"
+                            onChange={(e) => handleChangeShipPrice(e.target.value)}
+                        >
+                            {ship?.map((item: any, idx: number) => (
+                                <MenuItem key={idx} value={item?.shippName}>{item?.shippName}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </div>
                 <hr />
                 <div className="data-total-payment">
