@@ -67,6 +67,9 @@ const Payment = () => {
             console.log('data 111111111:  ', data);
             setOrder(data?.data?.products)
             setOrderRes(data?.data)
+            console.log('orderRes: ', orderRes);
+            console.log('orderReszz: ', order);
+
 
         } catch (err) {
             console.log(err)
@@ -337,7 +340,7 @@ const Payment = () => {
                 <div className="order" onClick={() => {
                     handleAddToOrder()
                     handleClearCart(orderRes?._id)
-                    navigation('/history')
+                    navigation(`/history/${localStorage.getItem('id')}`)
                 }}>
                     <p>Đặt hàng</p>
                 </div>

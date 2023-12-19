@@ -126,16 +126,21 @@ const ProductDetail = (props: ProductsProps) => {
                                 <p style={{ display: 'flex', justifyContent: 'flex-end', fontWeight: '600' }}>{state?.product?.amount} sản phẩm có sẵn</p>
                             </div>
                             <hr style={{ marginTop: '16px' }} />
-                            <div className="buy-a-add">
-                                <div className="btn-buy" onClick={(e) => handleAddProductToCart()}>
-                                    <p>Mua ngay</p>
-                                    <img className="pay-icon" src={PayIcon} alt="" />
-                                </div>
-                                <div className="btn-add-cart" onClick={(e) => handleAddProductToCart()}>
-                                    <p>Thêm vào giỏ hàng</p>
-                                    <img className="add-cart" src={AddToCartIcon} alt="" />
-                                </div>
-                            </div>
+                            {localStorage.getItem('name') &&
+                                <>
+                                    <div className="buy-a-add">
+                                        <div className="btn-buy" onClick={(e) => handleAddProductToCart()}>
+                                            <p>Mua ngay</p>
+                                            <img className="pay-icon" src={PayIcon} alt="" />
+                                        </div>
+                                        <div className="btn-add-cart" onClick={(e) => handleAddProductToCart()}>
+                                            <p>Thêm vào giỏ hàng</p>
+                                            <img className="add-cart" src={AddToCartIcon} alt="" />
+                                        </div>
+                                    </div>
+                                </>
+                            }
+
                         </div>
                         <div>
                             <p style={{

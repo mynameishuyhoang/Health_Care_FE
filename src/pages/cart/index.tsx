@@ -67,16 +67,18 @@ const Cart = () => {
 
     const handleUpdateQuantityCart = async () => {
         try {
-            const { data } = await axios.patch(`http://localhost:8000/api/cart/update`, {
+            const { data } = await axios.patch(`https://healthcare-bkmr.onrender.com/api/cart/update`, {
                 quantity: quantityUpdate,
                 customerId: localStorage.getItem('id'),
                 productId: editSelected?.productId
             })
+            console.log('data: ', data);
             toastMessage('success', 'Cập nhật số lượng sản phẩm thành công')
             handleCloseEdit()
             handleGetCart()
         } catch (err) {
             console.log(err)
+            toastMessage('error', 'Cập nhật số lượng sản phẩm không thành công')
         }
     }
 
